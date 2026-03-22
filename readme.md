@@ -4,6 +4,12 @@
 
 A mostly vibecoded lightweight Chrome extension designed to improve the user experience on the Neptun's new dashboard and UI. 
 
+## ✨ Features
+* **🖼️ Custom Dashboard Background** Replaces the default blue/purple top banner with a custom image of your choice. It automatically adjusts the greeting text to crisp white with a subtle drop shadow so it remains perfectly readable against any background.
+* **📂 Auto-Expand Dashboard Panels** Tired of clicking to see your grades or messages? This tweak automatically opens all collapsed accordion menus (*Vizsgák*, *Hírek*, *Eredmények*, etc.) the second the dashboard loads.
+* **🚀 Turbo List Expander (Global)** Whenever you view a long list (like course students, registered subjects, or exams), Neptun hides them behind a "Továbbiak betöltése" button. This script rapidly and silently clicks that button in the background to load up to 500 items instantly. If you need more, just click the button yourself, and the script will fetch the next 500!
+* **🔗 Version Badge & Quick Link** Adds a sleek, unobtrusive version number next to your name on the dashboard. Clicking it takes you straight to this GitHub repository.
+
 ## 🚀 How to Install
 
 Since this extension is not currently published on the Chrome Web Store, you can install it manually using Chrome's Developer Mode:
