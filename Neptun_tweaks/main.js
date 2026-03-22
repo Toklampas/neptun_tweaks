@@ -1,13 +1,22 @@
 // main.js
 
-// --- 1. Dashboard Tweaks ---
+// --- 1. Functions from our module files (Orchestrators) ---
+
+// Dashboard logic (version, accordion expander, and header image)
 function startDashboardTweaks() {
+    console.log('Neptun Tweaks: Dashboard detected. Starting tweaks.');
     let attempts = 0;
+    
+    // First, call the header image expander immediately.
+    startHeaderImageTweaks(); 
+
+    // Then, set up the interval to handle the complex Angular loads
     const checkInterval = setInterval(() => {
         attempts++;
         
-        const menusDone = expandMenus();
-        const versionDone = injectVersion();
+        // These are safe to call, as they have attribute/error checks
+        const menusDone = expandMenus(); // From homePageExpander.js
+        const versionDone = injectVersion(); // From version.js
         
         if ((menusDone && versionDone) || attempts >= 10) {
             clearInterval(checkInterval);
@@ -15,28 +24,28 @@ function startDashboardTweaks() {
     }, 500);
 }
 
-// --- 2. Startup & Watchdog Logic ---
+// --- 2. Startup & Watchdog Logic --- 
+
 function determinePageAndRun() {
-    // ALWAYS run the list expander, no matter what URL we are on!
-    startListExpander();
+    const currentUrl = location.href;
     
-    // ONLY run the dashboard tweaks if we are actually on the dashboard
-    if (location.href.includes('/dashboard')) {
+    // 1. ALWAYS run the list expander! 
+    // It will quietly wait in the background on every page looking for the button.
+    startListExpander(); 
+    
+    // 2. ONLY run the dashboard tweaks if we are actually on the dashboard.
+    if (currentUrl.includes('/dashboard')) {
         startDashboardTweaks();
-    }
+    } 
 }
 
-// A. Run immediately when the script first loads
 determinePageAndRun();
 
-// B. Watchdog: Check if the URL changed silently
 let lastUrl = location.href;
 setInterval(() => {
     const currentUrl = location.href;
     if (currentUrl !== lastUrl) {
         lastUrl = currentUrl; 
-        
-        // URL changed! Wait 0.5 seconds for Angular to load, then run our checks.
         setTimeout(determinePageAndRun, 500); 
     }
 }, 1000);
