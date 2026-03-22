@@ -1,6 +1,6 @@
-# BME Neptun Tweaks 🎓
+# Neptun Tweaks 🎓
 
-A lightweight Chrome extension designed to improve the user experience on the BME Neptun dashboard. 
+A lightweight Chrome extension designed to improve the user experience on the Neptun dashboard. 
 
 Currently, this extension automatically expands all collapsed widget panels (like *Vizsgák*, *Hírek*, *Eredmények*, etc.) as soon as you load the dashboard, saving you from having to click them open every time.
 
