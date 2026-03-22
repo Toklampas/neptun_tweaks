@@ -1,24 +1,44 @@
 // modules/listExpander.js
 
 let expanderInterval = null;
+let clickCount = 0;
+const MAX_CLICKS = 50; // 50 clicks * 10 items = 500 items
 
-// Renamed slightly since it now works on ALL lists, not just students
+// We add a listener to the whole document to watch for your manual clicks
+document.addEventListener('click', (event) => {
+    // 1. Did the click happen on or inside our target button?
+    const clickedButton = event.target.closest('button#next-visible-button');
+    
+    // 2. event.isTrusted is TRUE only if a real human clicked the mouse.
+    // If it's true, it means YOU clicked it, so we reset the counter to 0!
+    if (clickedButton && event.isTrusted) {
+        console.log('Neptun Tweaks: Manual click detected! Loading the next 500 items...');
+        clickCount = 0; 
+    }
+});
+
 function startListExpander() {
     // Clear any existing timers first
     if (expanderInterval) {
         clearInterval(expanderInterval);
     }
 
+    // Reset the counter every time you navigate to a new page
+    clickCount = 0;
+    console.log('Neptun Tweaks: Auto-expander active. Limit set to 500 items.');
+
     // Run the check 10 times a second
     expanderInterval = setInterval(() => {
         
-        // Find the button (No URL check anymore! We just look for the button everywhere)
         const loadMoreBtn = document.querySelector('button#next-visible-button');
 
-        // If the button exists AND isn't disabled by Angular...
+        // If the button exists, isn't disabled, AND we haven't hit our limit...
         if (loadMoreBtn && !loadMoreBtn.disabled) {
-            // Click it silently in the background
-            loadMoreBtn.click();
+            if (clickCount < MAX_CLICKS) {
+                // Click it and increase our counter
+                loadMoreBtn.click();
+                clickCount++;
+            }
         }
         
     }, 100); 
