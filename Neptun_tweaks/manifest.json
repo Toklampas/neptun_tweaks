@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "Neptun tweaks",
+  "version": "1.0",
+  "description": "A few tweaks for the Neptun system of BME.",
+  "content_scripts": [
+    {
+      "matches": ["https://neptun.bme.hu/hallgatoi/*"],
+      "js": ["content.js"]
+    }
+  ]
+}
