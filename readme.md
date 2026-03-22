@@ -2,8 +2,6 @@
 
 A lightweight Chrome extension designed to improve the user experience on the Neptun dashboard. 
 
-Currently, this extension automatically expands all collapsed widget panels (like *Vizsgák*, *Hírek*, *Eredmények*, etc.) as soon as you load the dashboard, saving you from having to click them open every time.
-
 ## 🚀 How to Install
 
 Since this extension is not currently published on the Chrome Web Store, you can install it manually using Chrome's Developer Mode:
