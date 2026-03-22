@@ -1,6 +1,8 @@
 # Neptun Tweaks 🎓
 
-A lightweight Chrome extension designed to improve the user experience on the Neptun dashboard. 
+**Right now this extension only works, and is tested on BME Neptun.**
+
+A mostly vibecoded lightweight Chrome extension designed to improve the user experience on the Neptun's new dashboard and UI. 
 
 ## 🚀 How to Install
 
