@@ -15,7 +15,7 @@ function injectVersion() {
         
         const versionLink = document.createElement('a');
         versionLink.id = 'neptun-ext-version'; 
-        versionLink.innerText = ` (Neptun tweaks - v${version})`;
+        versionLink.innerText = ` (Neptun Tweaks - v${version})`;
         versionLink.href = 'https://github.com/Toklampas/neptun_tweaks';
         versionLink.target = '_blank';
         
