@@ -36,7 +36,7 @@ function startHeaderImageTweaks() {
     // Paste your image URL here again!
     const customImageUrl = 'https://www.knykk.hu/hirek/wp-content/uploads/2025/06/Magyarorszag-vezeto-muszaki-egyeteme-atveszi-a-teljesitmenyalapu-finanszirozasi-modellt.jpg';
     
-    if (customImageUrl === '*** YOUR_IMAGE_URL_HERE ***' || customImageUrl === '') {
+    if (customImageUrl === '') {
       console.warn('Neptun Tweaks: No image URL provided.');
       return; 
     }

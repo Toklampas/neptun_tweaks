@@ -20,14 +20,14 @@ function injectVersion() {
         versionLink.target = '_blank';
         
         versionLink.style.fontSize = '0.6em';
-        // *** 🎨 READABILITY TWEAK ***
+        // *** READABILITY TWEAK ***
         // Set to white for visibility against any background image
         versionLink.style.color = 'white'; 
         versionLink.style.fontWeight = 'normal';
         versionLink.style.marginLeft = '8px';
         versionLink.style.textDecoration = 'none'; 
         
-        // *** 🎨 HOVER EFFECTS ***
+        // *** HOVER EFFECTS ***
         // Add a light blue hover effect that stands out against white text
         versionLink.addEventListener('mouseover', () => versionLink.style.color = '#add8e6'); // Light blue hover
         versionLink.addEventListener('mouseout', () => versionLink.style.color = 'white'); 
