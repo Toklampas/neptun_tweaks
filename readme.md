@@ -14,4 +14,4 @@ Since this extension is not currently published on the Chrome Web Store, you can
 4. **Load the Extension:** Click the **"Load unpacked"** button that appears in the top left.
 5. **Select the Folder:** Browse to the folder where you saved/extracted this project (the folder containing the `manifest.json` file) and select it.
 
-That's it! The extension is now active. Just log into your BME Neptun account and head to the dashboard.
+That's it! The extension is now active. Just log into your Neptun account and head to the dashboard.
