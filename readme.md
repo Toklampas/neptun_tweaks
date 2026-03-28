@@ -1,23 +1,23 @@
 # Neptun Tweaks 🎓
 
-**Right now this extension only works, and is tested on BME Neptun.**
+**Jelenleg ez a bővítmény csak a BME Neptunon működik és ott is lett tesztelve.**
 
-A mostly vibecoded lightweight Chrome extension designed to improve the user experience on the Neptun's new dashboard and UI. 
+Egy egyszerű Chrome bővítmény, aminek a célja, hogy kényelmesebbé tegye a Neptun új felületének és kezdőlapjának használatát.
 
-## ✨ Features
-* **🖼️ Custom Dashboard Background** Replaces the default blue/purple top banner with a custom image of your choice. It automatically adjusts the greeting text to crisp white with a subtle drop shadow so it remains perfectly readable against any background.
-* **📂 Auto-Expand Dashboard Panels** Tired of clicking to see your grades or messages? This tweak automatically opens all collapsed accordion menus (*Vizsgák*, *Hírek*, *Eredmények*, etc.) the second the dashboard loads.
-* **🚀 Turbo List Expander (Global)** Whenever you view a long list (like course students, registered subjects, or exams), Neptun hides them behind a "Továbbiak betöltése" button. This script rapidly and silently clicks that button in the background to load up to 500 items instantly. If you need more, just click the button yourself, and the script will fetch the next 500!
-* **🔗 Version Badge & Quick Link** Adds a sleek, unobtrusive version number next to your name on the dashboard. Clicking it takes you straight to this GitHub repository.
+## ✨ Funkciók
+* **🖼️ Egyedi háttér a kezdőlapon:** Lecseréli az alapértelmezett kék/lila felső sávot egy általad választott képre. Az üdvözlő szöveget automatikusan fehérre színezi és kap egy kis árnyékot is, így bármilyen háttéren tökéletesen olvasható marad.
+* **📂 Panelek automatikus kinyitása:** Unod már, hogy mindig kattintgatni kell a jegyeidhez vagy az üzeneteidhez? Ez a funkció a betöltés pillanatában rögtön lenyitja az összes összecsukott menüt (pl. *Vizsgák*, *Hírek*, *Eredmények*).
+* **🚀 Turbó listabetöltő (Mindenhol):** Amikor egy hosszú listát nézel (pl. hallgatók a kurzuson, felvett tárgyak, vizsgák), a Neptun elrejti őket egy „Továbbiak betöltése” gomb mögé. A script a háttérben gyorsan és láthatatlanul rákattint erre a gombra, és azonnal betölt akár 500 elemet. Ha ennél is több kell, csak kattints rá te magad, és a script behozza a következő 500-at!
+* **🔗 Verziószám és gyorslink:** Egy apró, letisztult verziószámot tesz a neved mellé a kezdőlapon. Ha rákattintasz, egyből erre a GitHub oldalra hoz.
 
-## 🚀 How to Install
+## 🚀 Telepítés
 
-Since this extension is not currently published on the Chrome Web Store, you can install it manually using Chrome's Developer Mode:
+Mivel a bővítmény egyelőre nincs fent a Chrome Web Store-ban, manuálisan tudod telepíteni a Chrome Fejlesztői módjának használatával:
 
-1. **Download the code:** Clone this repository using Git, or click the green **"Code"** button at the top of this page and select **"Download ZIP"**. If you downloaded the ZIP, extract it to a folder on your computer.
-2. **Open Extensions:** In Google Chrome, type `chrome://extensions/` into your address bar and press Enter.
-3. **Enable Developer Mode:** Turn on the **"Developer mode"** toggle switch in the top right corner of the page.
-4. **Load the Extension:** Click the **"Load unpacked"** button that appears in the top left.
-5. **Select the Folder:** Browse to the folder where you saved/extracted this project (the folder containing the `manifest.json` file) and select it.
+1. **Töltsd le a kódot:** Klónozd a repót Git-tel, vagy kattints a zöld **"Code"** gombra az oldal tetején, és válaszd a **"Download ZIP"** opciót. Ha a ZIP-et választottad, csomagold ki egy mappába a gépeden.
+2. **Nyisd meg a Bővítményeket:** A Google Chrome-ban írd be a címsorba, hogy `chrome://extensions/`, majd nyomj Entert.
+3. **Fejlesztői mód bekapcsolása:** A jobb felső sarokban kapcsold be a **"Fejlesztői mód"** (Developer mode) kapcsolót.
+4. **Bővítmény betöltése:** Kattints a bal felső sarokban megjelenő **"Kicsomagolt bővítmény betöltése"** (Load unpacked) gombra.
+5. **Válaszd ki a mappát:** Keresd meg azt a mappát, ahova elmentetted/kicsomagoltad a projektet (amiben a `manifest.json` fájl van), és válaszd ki.
 
-That's it! The extension is now active. Just log into your Neptun account and head to the dashboard.
+Kész is vagy! A bővítmény most már aktív. Csak lépj be a Neptunba, és csekkold a kezdőlapot.
