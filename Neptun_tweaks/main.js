@@ -47,10 +47,15 @@ function determinePageAndRun() {
         featureListExpand: true
     }, (settings) => {
         
+        // 1. GLOBAL: List Expander
         if (settings.featureListExpand) {
             startListExpander(); 
         }
+
+        // 2. GLOBAL: Footer Version
+        startFooterVersionTweaks();
         
+        // 3. SPECIFIC: Dashboard
         if (location.href.includes('/dashboard')) {
             startDashboardTweaks(settings);
         } 
