@@ -1,22 +1,36 @@
 // main.js
 
-// --- 1. Functions from our module files (Orchestrators) ---
+// *** YOUR DEFAULT IMAGE URL GOES HERE ***
+// This image will load if the toggle is ON but the text box is empty.
+const DEFAULT_BACKGROUND_URL = 'https://www.knykk.hu/hirek/wp-content/uploads/2025/06/Magyarorszag-vezeto-muszaki-egyeteme-atveszi-a-teljesitmenyalapu-finanszirozasi-modellt.jpg'; 
 
-// Dashboard logic (version, accordion expander, and header image)
-function startDashboardTweaks() {
-    console.log('Neptun Tweaks: Dashboard detected. Starting tweaks.');
+// --- 1. Dashboard Tweaks ---
+function startDashboardTweaks(settings) {
     let attempts = 0;
     
-    // First, call the header image expander immediately.
-    startHeaderImageTweaks(); 
+    // Check if the background feature is turned on
+    if (settings.featureBackground) {
+        
+        let urlToUse = settings.backgroundUrl.trim();
+        
+        // If the URL box is empty, fall back to our default!
+        if (urlToUse === '') {
+            urlToUse = DEFAULT_BACKGROUND_URL;
+        }
+        
+        // Pass the chosen URL to the image script
+        startHeaderImageTweaks(urlToUse); 
+    }
 
-    // Then, set up the interval to handle the complex Angular loads
     const checkInterval = setInterval(() => {
         attempts++;
+        let menusDone = true;
         
-        // These are safe to call, as they have attribute/error checks
-        const menusDone = expandMenus(); // From homePageExpander.js
-        const versionDone = injectVersion(); // From version.js
+        if (settings.featureHomeExpand) {
+            menusDone = expandMenus(); 
+        }
+        
+        const versionDone = injectVersion(); 
         
         if ((menusDone && versionDone) || attempts >= 10) {
             clearInterval(checkInterval);
@@ -25,22 +39,28 @@ function startDashboardTweaks() {
 }
 
 // --- 2. Startup & Watchdog Logic --- 
-
 function determinePageAndRun() {
-    const currentUrl = location.href;
-    
-    // 1. ALWAYS run the list expander! 
-    // It will quietly wait in the background on every page looking for the button.
-    startListExpander(); 
-    
-    // 2. ONLY run the dashboard tweaks if we are actually on the dashboard.
-    if (currentUrl.includes('/dashboard')) {
-        startDashboardTweaks();
-    } 
+    chrome.storage.local.get({
+        featureBackground: true,
+        backgroundUrl: '', 
+        featureHomeExpand: true,
+        featureListExpand: true
+    }, (settings) => {
+        
+        if (settings.featureListExpand) {
+            startListExpander(); 
+        }
+        
+        if (location.href.includes('/dashboard')) {
+            startDashboardTweaks(settings);
+        } 
+    });
 }
 
+// Start immediately
 determinePageAndRun();
 
+// Watchdog
 let lastUrl = location.href;
 setInterval(() => {
     const currentUrl = location.href;
