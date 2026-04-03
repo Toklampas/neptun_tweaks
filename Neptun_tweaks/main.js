@@ -66,6 +66,6 @@ setInterval(() => {
     const currentUrl = location.href;
     if (currentUrl !== lastUrl) {
         lastUrl = currentUrl; 
-        setTimeout(determinePageAndRun, 500); 
+        setTimeout(determinePageAndRun, 50); 
     }
-}, 1000);
+}, 100);
