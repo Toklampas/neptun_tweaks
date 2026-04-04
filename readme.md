@@ -5,9 +5,10 @@
 Egy egyszerű Chrome bővítmény, aminek a célja, hogy kényelmesebbé tegye a Neptun új felületének és kezdőlapjának használatát.
 
 ## ✨ Funkciók
-* **Egyedi háttér a kezdőlapon:** Lecseréli az alapértelmezett kék/lila felső sávot egy általad választott képre. Az üdvözlő szöveget automatikusan fehérre színezi és kap egy kis árnyékot is, így bármilyen háttéren tökéletesen olvasható marad.
-* **Panelek automatikus kinyitása:** Unod már, hogy mindig kattintgatni kell a jegyeidhez vagy az üzeneteidhez? Ez a funkció a betöltés pillanatában rögtön lenyitja az összes összecsukott menüt (pl. *Vizsgák*, *Hírek*, *Eredmények*).
-* **Turbó listabetöltő:** Amikor egy hosszú listát nézel (pl. hallgatók a kurzuson, felvett tárgyak, vizsgák), a Neptun elrejti őket egy „Továbbiak betöltése” gomb mögé. A script a háttérben gyorsan és láthatatlanul rákattint erre a gombra, és azonnal betölt akár 500 elemet. Ha ennél is több kell, csak kattints rá te magad, és a script behozza a következő 500-at!
+* **Egyedi háttér a kezdőlapon:** Lecseréli az alapértelmezett kék/lila felső sávot egy általad megadott képre, vagy egy letisztult, általad választott egyszínű háttérre. Az üdvözlő szöveget automatikusan fehérre színezi és kap egy kis árnyékot is, így bármilyen háttéren tökéletesen olvasható marad. Kép esetén az extension menüjében még finomhangolni is tudod a kép fókuszpontját!
+* **Gyors Naptár gomb:** A felső sávba, a keresőmező mellé automatikusan bekerül egy "Naptár" gomb, mellyel egyetlen kattintással elérheted a hallgatói órarendet, anélkül, hogy a menüben kéne keresgélned.
+* **Panelek automatikus kinyitása:** Unod már, hogy mindig kattintgatni kell a jegyeidhez vagy az üzeneteidhez? Ez a funkció a betöltés pillanatában rögtön lenyitja az összes összecsukott menüt a kezdőlapon (pl. *Vizsgák*, *Hírek*, *Eredmények*).
+* **Turbó listabetöltő:** Amikor egy hosszú listát nézel (pl. hallgatók a kurzuson, felvett tárgyak, vizsgák), a Neptun elrejti őket egy „Továbbiak betöltése” gomb mögé. A script a háttérben gyorsan és láthatatlanul rákattint erre a gombra. Az automatikusan betöltendő elemek maximum számát te magad tudod szabályozni a kiegészítő beállításaiban (50, 100, 250 vagy 500 elem). Ha ennél is több kell, csak kattints rá te magad az oldal alján, és újra betöltődik az adott mennyiség!
 * **Verziószám és gyorslink:** Egy apró, letisztult verziószámot tesz a neved mellé a kezdőlapon. Ha rákattintasz, egyből erre a GitHub oldalra hoz.
 
 ## 🚀 Telepítés
