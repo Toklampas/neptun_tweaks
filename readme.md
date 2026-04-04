@@ -12,12 +12,23 @@ Egy egyszerű Chrome bővítmény, aminek a célja, hogy kényelmesebbé tegye a
 
 ## 🚀 Telepítés
 
-Mivel a bővítmény egyelőre nincs fent a Chrome Web Store-ban, manuálisan tudod telepíteni a Chrome Fejlesztői módjának használatával:
+Mivel a bővítmény egyelőre nincs fent a hivatalos kiegészítő boltokban, manuálisan tudod telepíteni a böngésződ fejlesztői eszközeinek használatával:
 
-1. **Töltsd le a kódot:** Klónozd a repót Git-tel, vagy kattints a zöld **"Code"** gombra az oldal tetején, és válaszd a **"Download ZIP"** opciót. Ha a ZIP-et választottad, csomagold ki egy mappába a gépeden.
-2. **Nyisd meg a Bővítményeket:** A Google Chrome-ban írd be a címsorba, hogy `chrome://extensions/`, majd nyomj Entert.
-3. **Fejlesztői mód bekapcsolása:** A jobb felső sarokban kapcsold be a **"Fejlesztői mód"** (Developer mode) kapcsolót.
-4. **Bővítmény betöltése:** Kattints a bal felső sarokban megjelenő **"Kicsomagolt bővítmény betöltése"** (Load unpacked) gombra.
-5. **Válaszd ki a mappát:** Keresd meg azt a mappát, ahova elmentetted/kicsomagoltad a projektet (amiben a `manifest.json` fájl van), és válaszd ki.
+**Első lépés:** **Töltsd le a kódot!** Klónozd a repót Git-tel, vagy kattints a zöld **"Code"** gombra az oldal tetején, és válaszd a **"Download ZIP"** opciót. Ha a ZIP-et választottad, csomagold ki egy mappába a gépeden (a `Neptun_tweaks` mappára lesz szükséged).
 
-Kész is vagy! A bővítmény most már aktív. Csak lépj be a Neptunba, és csekkold a kezdőlapot.
+### 🌐 Chrome / Edge / Brave / Chromium
+
+1. **Nyisd meg a Bővítményeket:** Írd be a böngésző címsorába, hogy `chrome://extensions/` (Edge esetén `edge://extensions/`), majd nyomj Entert.
+2. **Fejlesztői mód bekapcsolása:** A jobb felső sarokban kapcsold be a **"Fejlesztői mód"** (Developer mode) kapcsolót.
+3. **Bővítmény betöltése:** Kattints a bal felső sarokban megjelenő **"Kicsomagolt bővítmény betöltése"** (Load unpacked) gombra.
+4. **Válaszd ki a mappát:** Válaszd ki azt a `Neptun_tweaks` mappát, ahova kicsomagoltad a letöltött fájlokat (ahol a `manifest.json` is található).
+
+### 🦊 Firefox
+
+1. **Nyisd meg a Hibakeresőt:** Írd be a címsorba, hogy `about:debugging#/runtime/this-firefox`, majd nyomj Entert.
+2. **Kiegészítő betöltése:** Kattints az **"Ideiglenes kiegészítő betöltése..."** (Load Temporary Add-on...) gombra.
+3. **Válaszd ki a fájlt:** Keresd meg a kicsomagolt `Neptun_tweaks` mappát, és válaszd ki benne a `manifest.json` fájlt. 
+*(Megjegyzés: Firefoxon az így betöltött bővítmények a böngésző újraindításakor eltűnnek, így bezárás után újra be kell őket tölteni.)*
+
+---
+**Kész is vagy!** A bővítmény most már aktív. Csak lépj be a Neptunba, vagy frissítsd az oldalt!
