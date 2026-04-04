@@ -32,6 +32,10 @@
       font-weight: 500;
     }
 
+    .toggle-row > label[title] {
+      cursor: help;
+    }
+
     .url-input {
       width: 100%;
       box-sizing: border-box;
@@ -168,7 +172,7 @@
   <h3>Neptun Tweaks</h3>
 
   <div class="toggle-row">
-    <label for="bgToggle">Custom Dashboard Background</label>
+    <label for="bgToggle" title="Replace the default dashboard header with a custom background image or solid color.">Custom Dashboard Background</label>
     <label class="switch">
       <input type="checkbox" id="bgToggle">
       <span class="slider"></span>
@@ -176,7 +180,7 @@
   </div>
 
   <div class="toggle-row" id="bgTypeRow">
-    <label for="bgTypeSelect">Background Type</label>
+    <label for="bgTypeSelect" title="Choose between a custom image URL or a solid color for the dashboard background.">Background Type</label>
     <select id="bgTypeSelect" class="url-input" style="width: 80px; margin-bottom: 0; padding: 4px;">
       <option value="image">Image</option>
       <option value="color">Color</option>
@@ -213,7 +217,7 @@
   <hr class="separator">
 
   <div class="toggle-row">
-    <label for="homeToggle">Auto-Expand Dashboard</label>
+    <label for="homeToggle" title="Automatically expand all collapsed sections on the dashboard homepage.">Auto-Expand Dashboard</label>
     <label class="switch">
       <input type="checkbox" id="homeToggle">
       <span class="slider"></span>
@@ -223,7 +227,7 @@
   <hr class="separator">
 
   <div class="toggle-row">
-    <label for="calendarToggle">Quick Calendar Button</label>
+    <label for="calendarToggle" title="Add a quick-access Calendar button to the header bar next to the Menu.">Quick Calendar Button</label>
     <label class="switch">
       <input type="checkbox" id="calendarToggle">
       <span class="slider"></span>
@@ -233,7 +237,7 @@
   <hr class="separator">
 
   <div class="toggle-row">
-    <label for="listToggle">Auto-Expand Lists</label>
+    <label for="listToggle" title="Automatically click 'Load More' on lists to show all items up to the configured limit.">Auto-Expand Lists</label>
     <label class="switch">
       <input type="checkbox" id="listToggle">
       <span class="slider"></span>
@@ -241,7 +245,7 @@
   </div>
 
   <div class="toggle-row" id="listLimitRow">
-    <label for="listExpandLimit">Max List Elements</label>
+    <label for="listExpandLimit" title="Maximum number of list items to auto-load before stopping.">Max List Elements</label>
     <select id="listExpandLimit" class="url-input"
       style="width: 70px; text-align: center; margin-bottom: 0; padding: 4px;">
       <option value="50">50</option>
@@ -254,7 +258,7 @@
   <hr class="separator">
 
   <div class="toggle-row">
-    <label for="serverInfoToggle">Show Server Info on Login</label>
+    <label for="serverInfoToggle" title="Display the server name and available spaces next to the language selector on the login page.">Show Server Info on Login</label>
     <label class="switch">
       <input type="checkbox" id="serverInfoToggle">
       <span class="slider"></span>
@@ -264,7 +268,7 @@
   <hr class="separator">
 
   <div class="toggle-row">
-    <label for="autoFilterToggle">Queries Tweaks</label>
+    <label for="autoFilterToggle" title="Auto-open the filter panel and auto-submit after selecting a query from the dropdown.">Queries Tweaks</label>
     <label class="switch">
       <input type="checkbox" id="autoFilterToggle">
       <span class="slider"></span>
