@@ -17,6 +17,7 @@
         "modules/listExpander.js",
         "modules/homePageExpander.js",
         "modules/version.js",
+        "modules/calendarButton.js",
         "main.js"
       ]
     }

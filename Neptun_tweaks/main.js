@@ -17,14 +17,19 @@ function startDashboardTweaks(settings) {
     const checkInterval = setInterval(() => {
         attempts++;
         let menusDone = true;
+        let calendarDone = true;
         
         if (settings.featureHomeExpand) {
             menusDone = expandMenus(); 
         }
         
+        if (settings.featureCalendarButton) {
+            calendarDone = injectCalendarButton();
+        }
+        
         const versionDone = injectVersion(); 
         
-        if ((menusDone && versionDone) || attempts >= 10) {
+        if ((menusDone && versionDone && calendarDone) || attempts >= 10) {
             clearInterval(checkInterval);
         }
     }, 500);
@@ -39,6 +44,7 @@ function determinePageAndRun() {
         backgroundUrl: '', 
         bgPositionY: 50,
         featureHomeExpand: true,
+        featureCalendarButton: true,
         featureListExpand: true,
         listExpandLimit: 500
     }, (settings) => {

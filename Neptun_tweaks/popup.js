@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const bgTypeRow = document.getElementById('bgTypeRow');
     const bgColorRow = document.getElementById('bgColorRow');
     const homeToggle = document.getElementById('homeToggle');
+    const calendarToggle = document.getElementById('calendarToggle');
     const listToggle = document.getElementById('listToggle');
     const listExpandLimit = document.getElementById('listExpandLimit');
     const listLimitRow = document.getElementById('listLimitRow');
@@ -29,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         backgroundUrl: '', 
         bgPositionY: 50, 
         featureHomeExpand: true,
+        featureCalendarButton: true,
         featureListExpand: true,
         listExpandLimit: 500
     }, (settings) => {
@@ -37,6 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
         bgColorInput.value = settings.bgColor;
         bgUrlInput.value = settings.backgroundUrl;
         homeToggle.checked = settings.featureHomeExpand;
+        calendarToggle.checked = settings.featureCalendarButton;
         listToggle.checked = settings.featureListExpand;
         listExpandLimit.value = settings.listExpandLimit;
         
@@ -132,6 +135,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     homeToggle.addEventListener('change', () => {
         chrome.storage.local.set({ featureHomeExpand: homeToggle.checked });
+    });
+
+    calendarToggle.addEventListener('change', () => {
+        chrome.storage.local.set({ featureCalendarButton: calendarToggle.checked });
     });
     
     listToggle.addEventListener('change', () => {
