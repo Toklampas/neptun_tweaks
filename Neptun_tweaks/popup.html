@@ -184,9 +184,13 @@
   </div>
 
   <div class="toggle-row" id="bgColorRow" style="display: none;">
-    <label for="bgColorInput">Choose Color</label>
-    <input type="color" id="bgColorInput"
-      style="cursor: pointer; width: 40px; height: 24px; border: 1px solid #ccc; border-radius: 4px; padding: 0; background: none;">
+    <label for="bgColorInput">Choose Color / Hex</label>
+    <div style="display: flex; gap: 8px; align-items: center;">
+      <input type="color" id="bgColorInput"
+        style="cursor: pointer; width: 36px; height: 26px; border: 1px solid #ccc; border-radius: 4px; padding: 0; background: none;">
+      <input type="text" id="bgHexInput" 
+        style="width: 70px; padding: 4px; border: 1px solid #ccc; border-radius: 4px; font-family: monospace; text-align: center; margin-bottom: 0;" placeholder="#1c2c42">
+    </div>
   </div>
 
   <input type="text" id="bgUrlInput" class="url-input" placeholder="Paste image URL here...">
@@ -247,7 +251,31 @@
     </select>
   </div>
 
+  <hr class="separator">
+
+  <div class="toggle-row">
+    <label for="serverInfoToggle">Show Server Info on Login</label>
+    <label class="switch">
+      <input type="checkbox" id="serverInfoToggle">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <hr class="separator">
+
+  <div class="toggle-row">
+    <label for="autoFilterToggle">Queries Tweaks</label>
+    <label class="switch">
+      <input type="checkbox" id="autoFilterToggle">
+      <span class="slider"></span>
+    </label>
+  </div>
+
   <div class="note">Refresh Neptun if the changes didn't apply automatically.</div>
+
+  <div style="text-align: center; margin-top: 10px;">
+    <a href="#" id="openOptionsPage" style="color: #0056b3; font-size: 12px; text-decoration: none;">⧉ Open Settings in Full Tab</a>
+  </div>
 
   <script src="popup.js"></script>
 </body>

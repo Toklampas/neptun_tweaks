@@ -46,17 +46,29 @@ function determinePageAndRun() {
         featureHomeExpand: true,
         featureCalendarButton: true,
         featureListExpand: true,
-        listExpandLimit: 500
+        listExpandLimit: 500,
+        featureServerInfo: true,
+        featureAutoFilter: true
     }, (settings) => {
         
         if (settings.featureListExpand) {
             startListExpander(settings.listExpandLimit); 
         }
         startFooterVersionTweaks();
+
+        if (settings.featureAutoFilter) {
+            startQueryTweaks();
+        }
         
         if (location.href.includes('/dashboard')) {
             startDashboardTweaks(settings);
-        } 
+        } else if (location.href.includes('/login')) {
+            if (settings.featureServerInfo) {
+                startServerInfoMirror();
+            } else {
+                removeServerInfoMirror();
+            }
+        }
     });
 }
 
@@ -95,6 +107,14 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
             // Instantly apply the changes to the DOM!
             if (typeof window.updateLiveBackground === 'function') {
                 window.updateLiveBackground(settings.featureBackground, settings.bgType, urlToUse, settings.bgPositionY, settings.bgColor);
+            }
+        });
+    } else if (namespace === 'local' && location.href.includes('/login')) {
+        chrome.storage.local.get({ featureServerInfo: true }, (settings) => {
+            if (settings.featureServerInfo) {
+                startServerInfoMirror();
+            } else {
+                removeServerInfoMirror();
             }
         });
     }

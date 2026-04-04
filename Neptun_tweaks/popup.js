@@ -5,13 +5,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const bgUrlInput = document.getElementById('bgUrlInput');
     const bgTypeSelect = document.getElementById('bgTypeSelect');
     const bgColorInput = document.getElementById('bgColorInput');
+    const bgHexInput = document.getElementById('bgHexInput');
+    const openOptionsPage = document.getElementById('openOptionsPage');
     const bgTypeRow = document.getElementById('bgTypeRow');
     const bgColorRow = document.getElementById('bgColorRow');
+
+    // Detect Firefox: hide native color picker (it closes the popup), show hex input instead
+    const isFirefox = navigator.userAgent.includes('Firefox');
+    const bgColorLabel = bgColorRow.querySelector('label');
+    if (isFirefox) {
+        bgColorInput.style.display = 'none';
+        bgColorLabel.textContent = 'Hex Color Code';
+    } else {
+        bgHexInput.style.display = 'none';
+        bgColorLabel.textContent = 'Choose Color';
+    }
     const homeToggle = document.getElementById('homeToggle');
     const calendarToggle = document.getElementById('calendarToggle');
     const listToggle = document.getElementById('listToggle');
     const listExpandLimit = document.getElementById('listExpandLimit');
     const listLimitRow = document.getElementById('listLimitRow');
+    const serverInfoToggle = document.getElementById('serverInfoToggle');
+    const autoFilterToggle = document.getElementById('autoFilterToggle');
     
     // Position controls
     const shiftControls = document.getElementById('shiftControls');
@@ -32,7 +47,9 @@ document.addEventListener('DOMContentLoaded', () => {
         featureHomeExpand: true,
         featureCalendarButton: true,
         featureListExpand: true,
-        listExpandLimit: 500
+        listExpandLimit: 500,
+        featureServerInfo: true,
+        featureAutoFilter: true
     }, (settings) => {
         bgToggle.checked = settings.featureBackground;
         bgTypeSelect.value = settings.bgType;
@@ -42,6 +59,10 @@ document.addEventListener('DOMContentLoaded', () => {
         calendarToggle.checked = settings.featureCalendarButton;
         listToggle.checked = settings.featureListExpand;
         listExpandLimit.value = settings.listExpandLimit;
+        serverInfoToggle.checked = settings.featureServerInfo;
+        autoFilterToggle.checked = settings.featureAutoFilter;
+        
+        bgHexInput.value = settings.bgColor;
         
         bgPosValue.innerText = settings.bgPositionY + '%';
         updateBackgroundControlsState(settings.featureBackground, settings.bgType);
@@ -90,7 +111,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     bgColorInput.addEventListener('input', () => {
+        bgHexInput.value = bgColorInput.value;
         chrome.storage.local.set({ bgColor: bgColorInput.value });
+    });
+    // Firefox specific fix: Ensure 'change' is also monitored, as 'input' can be flaky in the native OS color dialog
+    bgColorInput.addEventListener('change', () => {
+        bgHexInput.value = bgColorInput.value;
+        chrome.storage.local.set({ bgColor: bgColorInput.value });
+    });
+
+    // Fallback: update color if valid hex is typed manually
+    bgHexInput.addEventListener('input', () => {
+        const val = bgHexInput.value.trim();
+        if (/^#[0-9A-F]{6}$/i.test(val)) {
+            bgColorInput.value = val;
+            chrome.storage.local.set({ bgColor: val });
+        }
     });
     
     bgUrlInput.addEventListener('input', () => {
@@ -150,4 +186,23 @@ document.addEventListener('DOMContentLoaded', () => {
         const val = parseInt(listExpandLimit.value, 10);
         chrome.storage.local.set({ listExpandLimit: val });
     });
+
+    serverInfoToggle.addEventListener('change', () => {
+        chrome.storage.local.set({ featureServerInfo: serverInfoToggle.checked });
+    });
+
+    autoFilterToggle.addEventListener('change', () => {
+        chrome.storage.local.set({ featureAutoFilter: autoFilterToggle.checked });
+    });
+
+    if (openOptionsPage) {
+        openOptionsPage.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (chrome.runtime.openOptionsPage) {
+                chrome.runtime.openOptionsPage();
+            } else {
+                window.open(chrome.runtime.getURL('popup.html'));
+            }
+        });
+    }
 });
