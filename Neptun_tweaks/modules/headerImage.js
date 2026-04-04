@@ -1,16 +1,21 @@
 // modules/headerImage.js
 
-function setHeaderImage(imageUrl, bgPositionY) {
+function setHeaderImage(bgType, imageUrl, bgPositionY, bgColor) {
     const bgWrapper = document.querySelector('div.primary-bg-wrapper');
     
     if (bgWrapper && !bgWrapper.hasAttribute('data-image-set')) {
         bgWrapper.setAttribute('data-image-set', 'true');
         
-        bgWrapper.style.backgroundImage = `url(${imageUrl})`;
-        bgWrapper.style.backgroundSize = 'cover';    
-        bgWrapper.style.backgroundPosition = `center ${bgPositionY}%`; 
-        bgWrapper.style.backgroundRepeat = 'no-repeat';
-        bgWrapper.style.backgroundColor = 'transparent'; 
+        if (bgType === 'color') {
+            bgWrapper.style.backgroundImage = 'none';
+            bgWrapper.style.backgroundColor = bgColor;
+        } else {
+            bgWrapper.style.backgroundImage = `url(${imageUrl})`;
+            bgWrapper.style.backgroundSize = 'cover';    
+            bgWrapper.style.backgroundPosition = `center ${bgPositionY}%`; 
+            bgWrapper.style.backgroundRepeat = 'no-repeat';
+            bgWrapper.style.backgroundColor = 'transparent'; 
+        }
         
         const greetingText = document.querySelector('h3.header__title');
         if (greetingText) {
@@ -31,20 +36,20 @@ function setHeaderImage(imageUrl, bgPositionY) {
     return bgWrapper && bgWrapper.hasAttribute('data-image-set'); 
 }
 
-function startHeaderImageTweaks(customImageUrl, bgPositionY) {
-    if (!customImageUrl) return; 
+function startHeaderImageTweaks(bgType, customImageUrl, bgPositionY, bgColor) {
+    if (bgType === 'image' && !customImageUrl) return; 
     
     let attempts = 0;
     const checkInterval = setInterval(() => {
         attempts++;
-        if (setHeaderImage(customImageUrl, bgPositionY) || attempts >= 10) {
+        if (setHeaderImage(bgType, customImageUrl, bgPositionY, bgColor) || attempts >= 10) {
             clearInterval(checkInterval);
         }
     }, 500);
 }
 
 // Live Update Function
-window.updateLiveBackground = function(isEnabled, imageUrl, bgPositionY) {
+window.updateLiveBackground = function(isEnabled, bgType, imageUrl, bgPositionY, bgColor) {
     const bgWrapper = document.querySelector('div.primary-bg-wrapper');
     const greetingText = document.querySelector('h3.header__title');
     const versionLink = document.getElementById('neptun-ext-version');
@@ -54,7 +59,7 @@ window.updateLiveBackground = function(isEnabled, imageUrl, bgPositionY) {
     if (isEnabled) {
         // Force the setter to run again by removing the attribute
         bgWrapper.removeAttribute('data-image-set');
-        setHeaderImage(imageUrl, bgPositionY);
+        setHeaderImage(bgType, imageUrl, bgPositionY, bgColor);
     } else {
         // Strip custom styles away
         bgWrapper.removeAttribute('data-image-set');

@@ -11,7 +11,7 @@ function startDashboardTweaks(settings) {
         if (urlToUse === '') {
             urlToUse = DEFAULT_BACKGROUND_URL;
         }
-        startHeaderImageTweaks(urlToUse, settings.bgPositionY); 
+        startHeaderImageTweaks(settings.bgType, urlToUse, settings.bgPositionY, settings.bgColor); 
     }
 
     const checkInterval = setInterval(() => {
@@ -34,14 +34,17 @@ function startDashboardTweaks(settings) {
 function determinePageAndRun() {
     chrome.storage.local.get({
         featureBackground: true,
+        bgType: 'image',
+        bgColor: '#0056b3',
         backgroundUrl: '', 
         bgPositionY: 50,
         featureHomeExpand: true,
-        featureListExpand: true
+        featureListExpand: true,
+        listExpandLimit: 500
     }, (settings) => {
         
         if (settings.featureListExpand) {
-            startListExpander(); 
+            startListExpander(settings.listExpandLimit); 
         }
         startFooterVersionTweaks();
         
@@ -73,6 +76,8 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
         // Grab the freshest settings
         chrome.storage.local.get({
             featureBackground: true,
+            bgType: 'image',
+            bgColor: '#0056b3',
             backgroundUrl: '', 
             bgPositionY: 50
         }, (settings) => {
@@ -83,7 +88,7 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
             
             // Instantly apply the changes to the DOM!
             if (typeof window.updateLiveBackground === 'function') {
-                window.updateLiveBackground(settings.featureBackground, urlToUse, settings.bgPositionY);
+                window.updateLiveBackground(settings.featureBackground, settings.bgType, urlToUse, settings.bgPositionY, settings.bgColor);
             }
         });
     }
