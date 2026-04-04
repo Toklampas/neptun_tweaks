@@ -60,9 +60,9 @@ setInterval(() => {
     const currentUrl = location.href;
     if (currentUrl !== lastUrl) {
         lastUrl = currentUrl; 
-        setTimeout(determinePageAndRun, 500); 
+        setTimeout(determinePageAndRun, 5); 
     }
-}, 1000);
+}, 10);
 
 // --- 3. NEW: Live Settings Listener ---
 // This listens for any changes made in the popup menu in real-time
