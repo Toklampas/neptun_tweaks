@@ -2,7 +2,7 @@
 
 **Jelenleg ez a bővítmény csak a BME Neptunon működik és ott is lett tesztelve.**
 
-Egy egyszerű Chrome bővítmény, aminek a célja, hogy kényelmesebbé tegye a Neptun új felületének és kezdőlapjának használatát.
+Egy egyszerű böngésző bővítmény, aminek a célja, hogy kényelmesebbé tegye a Neptun új felületének és kezdőlapjának használatát.
 
 ## ✨ Funkciók
 * **Egyedi háttér a kezdőlapon:** Lecseréli az alapértelmezett kék/lila felső sávot egy általad megadott képre, vagy egy letisztult, általad választott egyszínű háttérre. Az üdvözlő szöveget automatikusan fehérre színezi és kap egy kis árnyékot is, így bármilyen háttéren tökéletesen olvasható marad. Kép esetén az extension menüjében még finomhangolni is tudod a kép fókuszpontját!

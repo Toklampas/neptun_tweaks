@@ -38,11 +38,24 @@ function mirrorServerInfo() {
             langDropdown.appendChild(mirror);
         }
         
-        // Update text with structured format
-        mirror.innerHTML = `
-            <div>Csatlakozott szerver: <strong>${serverName}</strong></div>
-            ${freeSpaces ? `<div>Szabad helyek száma: <strong>${freeSpaces}</strong></div>` : ''}
-        `;
+        // Update text with structured format (using DOM API to avoid innerHTML)
+        mirror.textContent = '';
+
+        const serverLine = document.createElement('div');
+        serverLine.append('Csatlakozott szerver: ');
+        const serverBold = document.createElement('strong');
+        serverBold.textContent = serverName;
+        serverLine.appendChild(serverBold);
+        mirror.appendChild(serverLine);
+
+        if (freeSpaces) {
+            const spacesLine = document.createElement('div');
+            spacesLine.append('Szabad helyek száma: ');
+            const spacesBold = document.createElement('strong');
+            spacesBold.textContent = freeSpaces;
+            spacesLine.appendChild(spacesBold);
+            mirror.appendChild(spacesLine);
+        }
         return true;
     }
     return false;
