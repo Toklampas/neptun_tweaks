@@ -15,7 +15,8 @@ function autoOpenFilterPanel() {
 
         const allButtons = document.querySelectorAll('button');
         for (const btn of allButtons) {
-            if (btn.textContent.trim().includes('Szűrő megnyitása')) {
+            const text = btn.textContent.trim();
+            if (text.includes('Szűrő megnyitása') || text.includes('Open filter')) {
                 btn.click();
                 console.log('Neptun Tweaks: Auto-opened filter panel.');
                 clearInterval(interval);
@@ -38,17 +39,6 @@ function autoSubmitOnSelection() {
         // Small delay to let Angular process the selection
         setTimeout(() => {
             let filterBtn = document.getElementById('filter-table');
-
-            // Fallback: find by text content
-            if (!filterBtn) {
-                const allButtons = document.querySelectorAll('button');
-                for (const btn of allButtons) {
-                    if (btn.textContent.trim().includes('Lista szűrése')) {
-                        filterBtn = btn;
-                        break;
-                    }
-                }
-            }
 
             if (filterBtn) {
                 filterBtn.click();
