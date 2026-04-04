@@ -1,25 +1,17 @@
 // main.js
 
-// *** YOUR DEFAULT IMAGE URL GOES HERE ***
-// This image will load if the toggle is ON but the text box is empty.
 const DEFAULT_BACKGROUND_URL = 'https://www.knykk.hu/hirek/wp-content/uploads/2025/06/Magyarorszag-vezeto-muszaki-egyeteme-atveszi-a-teljesitmenyalapu-finanszirozasi-modellt.jpg'; 
 
 // --- 1. Dashboard Tweaks ---
 function startDashboardTweaks(settings) {
     let attempts = 0;
     
-    // Check if the background feature is turned on
     if (settings.featureBackground) {
-        
         let urlToUse = settings.backgroundUrl.trim();
-        
-        // If the URL box is empty, fall back to our default!
         if (urlToUse === '') {
             urlToUse = DEFAULT_BACKGROUND_URL;
         }
-        
-        // Pass the chosen URL to the image script
-        startHeaderImageTweaks(urlToUse); 
+        startHeaderImageTweaks(urlToUse, settings.bgPositionY); 
     }
 
     const checkInterval = setInterval(() => {
@@ -43,19 +35,16 @@ function determinePageAndRun() {
     chrome.storage.local.get({
         featureBackground: true,
         backgroundUrl: '', 
+        bgPositionY: 50,
         featureHomeExpand: true,
         featureListExpand: true
     }, (settings) => {
         
-        // 1. GLOBAL: List Expander
         if (settings.featureListExpand) {
             startListExpander(); 
         }
-
-        // 2. GLOBAL: Footer Version
         startFooterVersionTweaks();
         
-        // 3. SPECIFIC: Dashboard
         if (location.href.includes('/dashboard')) {
             startDashboardTweaks(settings);
         } 
@@ -71,6 +60,31 @@ setInterval(() => {
     const currentUrl = location.href;
     if (currentUrl !== lastUrl) {
         lastUrl = currentUrl; 
-        setTimeout(determinePageAndRun, 50); 
+        setTimeout(determinePageAndRun, 500); 
     }
-}, 100);
+}, 1000);
+
+// --- 3. NEW: Live Settings Listener ---
+// This listens for any changes made in the popup menu in real-time
+chrome.storage.onChanged.addListener((changes, namespace) => {
+    // Only react if we are actually looking at the dashboard
+    if (namespace === 'local' && location.href.includes('/dashboard')) {
+        
+        // Grab the freshest settings
+        chrome.storage.local.get({
+            featureBackground: true,
+            backgroundUrl: '', 
+            bgPositionY: 50
+        }, (settings) => {
+            let urlToUse = settings.backgroundUrl.trim();
+            if (urlToUse === '') {
+                urlToUse = DEFAULT_BACKGROUND_URL;
+            }
+            
+            // Instantly apply the changes to the DOM!
+            if (typeof window.updateLiveBackground === 'function') {
+                window.updateLiveBackground(settings.featureBackground, urlToUse, settings.bgPositionY);
+            }
+        });
+    }
+});

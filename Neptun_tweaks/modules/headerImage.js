@@ -1,6 +1,6 @@
 // modules/headerImage.js
 
-function setHeaderImage(imageUrl) {
+function setHeaderImage(imageUrl, bgPositionY) {
     const bgWrapper = document.querySelector('div.primary-bg-wrapper');
     
     if (bgWrapper && !bgWrapper.hasAttribute('data-image-set')) {
@@ -8,7 +8,7 @@ function setHeaderImage(imageUrl) {
         
         bgWrapper.style.backgroundImage = `url(${imageUrl})`;
         bgWrapper.style.backgroundSize = 'cover';    
-        bgWrapper.style.backgroundPosition = 'center'; 
+        bgWrapper.style.backgroundPosition = `center ${bgPositionY}%`; 
         bgWrapper.style.backgroundRepeat = 'no-repeat';
         bgWrapper.style.backgroundColor = 'transparent'; 
         
@@ -17,6 +17,13 @@ function setHeaderImage(imageUrl) {
             greetingText.style.color = 'white';
             greetingText.style.textShadow = '1px 1px 4px rgba(0, 0, 0, 0.8)';
         }
+
+        // Also update the version link if it's already on the screen
+        const versionLink = document.getElementById('neptun-ext-version');
+        if (versionLink) {
+            versionLink.style.color = 'white';
+            versionLink.style.textShadow = '1px 1px 4px rgba(0, 0, 0, 0.8)';
+        }
         
         return true; 
     }
@@ -24,20 +31,45 @@ function setHeaderImage(imageUrl) {
     return bgWrapper && bgWrapper.hasAttribute('data-image-set'); 
 }
 
-// Now we accept the customImageUrl as an argument
-function startHeaderImageTweaks(customImageUrl) {
-    
-    // Safety check just in case it's empty
-    if (!customImageUrl) {
-      console.warn('Neptun Tweaks: No image URL provided.');
-      return; 
-    }
+function startHeaderImageTweaks(customImageUrl, bgPositionY) {
+    if (!customImageUrl) return; 
     
     let attempts = 0;
     const checkInterval = setInterval(() => {
         attempts++;
-        if (setHeaderImage(customImageUrl) || attempts >= 10) {
+        if (setHeaderImage(customImageUrl, bgPositionY) || attempts >= 10) {
             clearInterval(checkInterval);
         }
     }, 500);
+}
+
+// Live Update Function
+window.updateLiveBackground = function(isEnabled, imageUrl, bgPositionY) {
+    const bgWrapper = document.querySelector('div.primary-bg-wrapper');
+    const greetingText = document.querySelector('h3.header__title');
+    const versionLink = document.getElementById('neptun-ext-version');
+
+    if (!bgWrapper) return;
+
+    if (isEnabled) {
+        // Force the setter to run again by removing the attribute
+        bgWrapper.removeAttribute('data-image-set');
+        setHeaderImage(imageUrl, bgPositionY);
+    } else {
+        // Strip custom styles away
+        bgWrapper.removeAttribute('data-image-set');
+        bgWrapper.style.backgroundImage = '';
+        bgWrapper.style.backgroundColor = ''; 
+        
+        if (greetingText) {
+            greetingText.style.color = '';
+            greetingText.style.textShadow = '';
+        }
+
+        // Reset the version link back to dark grey!
+        if (versionLink) {
+            versionLink.style.color = '#555';
+            versionLink.style.textShadow = '';
+        }
+    }
 }

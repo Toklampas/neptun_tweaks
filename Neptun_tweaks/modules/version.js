@@ -14,14 +14,32 @@ function injectVersion() {
         versionLink.href = 'https://github.com/Toklampas/neptun_tweaks';
         versionLink.target = '_blank';
         
+        // Check if the custom background is currently active
+        const isCustomBg = document.querySelector('div.primary-bg-wrapper[data-image-set="true"]') !== null;
+        
         versionLink.style.fontSize = '0.6em';
-        versionLink.style.color = 'white'; 
         versionLink.style.fontWeight = 'normal';
         versionLink.style.marginLeft = '8px';
         versionLink.style.textDecoration = 'none'; 
         
-        versionLink.addEventListener('mouseover', () => versionLink.style.color = '#add8e6');
-        versionLink.addEventListener('mouseout', () => versionLink.style.color = 'white'); 
+        // Set the initial color based on whether the image is currently active
+        if (isCustomBg) {
+            versionLink.style.color = 'white';
+            versionLink.style.textShadow = '1px 1px 4px rgba(0, 0, 0, 0.8)';
+        } else {
+            versionLink.style.color = '#555'; // Darker grey for the default background
+            versionLink.style.textShadow = '';
+        }
+        
+        // Handle hover states dynamically
+        versionLink.addEventListener('mouseover', () => {
+            const hasBg = document.querySelector('div.primary-bg-wrapper[data-image-set="true"]') !== null;
+            versionLink.style.color = hasBg ? '#add8e6' : '#0056b3'; // Light blue on image, Neptun blue on default
+        });
+        versionLink.addEventListener('mouseout', () => {
+            const hasBg = document.querySelector('div.primary-bg-wrapper[data-image-set="true"]') !== null;
+            versionLink.style.color = hasBg ? 'white' : '#555';
+        });
         
         titleElement.appendChild(versionLink);
         return true;
