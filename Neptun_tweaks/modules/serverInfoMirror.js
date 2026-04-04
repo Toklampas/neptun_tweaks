@@ -25,17 +25,6 @@ function mirrorServerInfo() {
             mirror = document.createElement('div');
             mirror.id = 'neptun-tweaks-server-info-mirror';
             
-            // Format for two lines
-            mirror.style.display = 'flex';
-            mirror.style.flexDirection = 'column';
-            mirror.style.alignItems = 'flex-start';
-            mirror.style.justifyContent = 'center';
-            mirror.style.fontSize = '12px';
-            mirror.style.color = '#333'; // Dark enough for contrast, but let's add text-shadow just in case
-            mirror.style.textShadow = '0 0 2px rgba(255,255,255,0.8)';
-            mirror.style.whiteSpace = 'nowrap';
-            mirror.style.lineHeight = '1.3';
-            
             // Clean up old parent modifications if they exist from previous load
             if (langDropdown.parentNode) {
                 langDropdown.parentNode.style.display = '';
@@ -44,18 +33,15 @@ function mirrorServerInfo() {
             }
 
             // Make the language dropdown a flex container so they sit side-by-side
-            langDropdown.style.display = 'flex';
-            langDropdown.style.alignItems = 'center';
-            langDropdown.style.justifyContent = 'flex-start';
-            langDropdown.style.gap = '12px'; // Spacing between text and the button
+            langDropdown.classList.add('neptun-tweaks-lang-flex');
             
             langDropdown.appendChild(mirror);
         }
         
         // Update text with structured format
         mirror.innerHTML = `
-            <div>Csatlakozott szerver: <strong style="font-weight: 700;">${serverName}</strong></div>
-            ${freeSpaces ? `<div>Szabad helyek száma: <strong style="font-weight: 700;">${freeSpaces}</strong></div>` : ''}
+            <div>Csatlakozott szerver: <strong>${serverName}</strong></div>
+            ${freeSpaces ? `<div>Szabad helyek száma: <strong>${freeSpaces}</strong></div>` : ''}
         `;
         return true;
     }

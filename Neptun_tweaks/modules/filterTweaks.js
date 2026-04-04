@@ -31,7 +31,12 @@ function autoOpenFilterPanel() {
 }
 
 // Auto-clicks "Lista szűrése" after selecting a dropdown option
+let autoSubmitListenerActive = false;
+
 function autoSubmitOnSelection() {
+    if (autoSubmitListenerActive) return; // already listening
+    autoSubmitListenerActive = true;
+
     document.addEventListener('click', (event) => {
         const option = event.target.closest('mat-option');
         if (!option) return;

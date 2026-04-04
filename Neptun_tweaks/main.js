@@ -37,19 +37,7 @@ function startDashboardTweaks(settings) {
 
 // --- 2. Startup & Watchdog Logic --- 
 function determinePageAndRun() {
-    chrome.storage.local.get({
-        featureBackground: true,
-        bgType: 'image',
-        bgColor: '#0056b3',
-        backgroundUrl: '', 
-        bgPositionY: 50,
-        featureHomeExpand: true,
-        featureCalendarButton: true,
-        featureListExpand: true,
-        listExpandLimit: 500,
-        featureServerInfo: true,
-        featureAutoFilter: true
-    }, (settings) => {
+    chrome.storage.local.get(NEPTUN_TWEAKS_DEFAULTS, (settings) => {
         
         if (settings.featureListExpand) {
             startListExpander(settings.listExpandLimit); 
@@ -75,15 +63,23 @@ function determinePageAndRun() {
 // Start immediately
 determinePageAndRun();
 
-// Watchdog
+// Watchdog: detect SPA navigations
 let lastUrl = location.href;
-setInterval(() => {
+function onUrlChange() {
     const currentUrl = location.href;
     if (currentUrl !== lastUrl) {
-        lastUrl = currentUrl; 
-        setTimeout(determinePageAndRun, 5); 
+        lastUrl = currentUrl;
+        setTimeout(determinePageAndRun, 50);
     }
-}, 10);
+}
+
+// Instant detection for browser back/forward buttons
+window.addEventListener('popstate', onUrlChange);
+window.addEventListener('hashchange', onUrlChange);
+
+// Fallback poll for Angular's internal pushState navigations (1s is plenty —
+// the page itself takes longer to render than that)
+setInterval(onUrlChange, 1000);
 
 // --- 3. NEW: Live Settings Listener ---
 // This listens for any changes made in the popup menu in real-time
@@ -92,13 +88,7 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
     if (namespace === 'local' && location.href.includes('/dashboard')) {
         
         // Grab the freshest settings
-        chrome.storage.local.get({
-            featureBackground: true,
-            bgType: 'image',
-            bgColor: '#0056b3',
-            backgroundUrl: '', 
-            bgPositionY: 50
-        }, (settings) => {
+        chrome.storage.local.get(NEPTUN_TWEAKS_DEFAULTS, (settings) => {
             let urlToUse = settings.backgroundUrl.trim();
             if (urlToUse === '') {
                 urlToUse = DEFAULT_BACKGROUND_URL;

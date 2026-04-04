@@ -38,19 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const bgPosValue = document.getElementById('bgPosValue');
 
     // 1. Load settings
-    chrome.storage.local.get({
-        featureBackground: true,
-        bgType: 'image',
-        bgColor: '#0056b3',
-        backgroundUrl: '', 
-        bgPositionY: 50, 
-        featureHomeExpand: true,
-        featureCalendarButton: true,
-        featureListExpand: true,
-        listExpandLimit: 500,
-        featureServerInfo: true,
-        featureAutoFilter: true
-    }, (settings) => {
+    chrome.storage.local.get(NEPTUN_TWEAKS_DEFAULTS, (settings) => {
         bgToggle.checked = settings.featureBackground;
         bgTypeSelect.value = settings.bgType;
         bgColorInput.value = settings.bgColor;

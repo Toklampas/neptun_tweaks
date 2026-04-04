@@ -17,18 +17,8 @@ function setHeaderImage(bgType, imageUrl, bgPositionY, bgColor) {
             bgWrapper.style.backgroundColor = 'transparent'; 
         }
         
-        const greetingText = document.querySelector('h3.header__title');
-        if (greetingText) {
-            greetingText.style.color = 'white';
-            greetingText.style.textShadow = '1px 1px 4px rgba(0, 0, 0, 0.8)';
-        }
-
-        // Also update the version link if it's already on the screen
-        const versionLink = document.getElementById('neptun-ext-version');
-        if (versionLink) {
-            versionLink.style.color = 'white';
-            versionLink.style.textShadow = '1px 1px 4px rgba(0, 0, 0, 0.8)';
-        }
+        // Toggle body class — CSS handles greeting text + version link colors
+        document.body.classList.add('neptun-tweaks-custom-bg');
         
         return true; 
     }
@@ -51,8 +41,6 @@ function startHeaderImageTweaks(bgType, customImageUrl, bgPositionY, bgColor) {
 // Live Update Function
 window.updateLiveBackground = function(isEnabled, bgType, imageUrl, bgPositionY, bgColor) {
     const bgWrapper = document.querySelector('div.primary-bg-wrapper');
-    const greetingText = document.querySelector('h3.header__title');
-    const versionLink = document.getElementById('neptun-ext-version');
 
     if (!bgWrapper) return;
 
@@ -66,15 +54,7 @@ window.updateLiveBackground = function(isEnabled, bgType, imageUrl, bgPositionY,
         bgWrapper.style.backgroundImage = '';
         bgWrapper.style.backgroundColor = ''; 
         
-        if (greetingText) {
-            greetingText.style.color = '';
-            greetingText.style.textShadow = '';
-        }
-
-        // Reset the version link back to dark grey!
-        if (versionLink) {
-            versionLink.style.color = '#555';
-            versionLink.style.textShadow = '';
-        }
+        // Remove body class — CSS reverts greeting text + version link colors
+        document.body.classList.remove('neptun-tweaks-custom-bg');
     }
 }

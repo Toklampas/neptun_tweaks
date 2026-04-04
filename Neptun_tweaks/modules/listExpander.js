@@ -14,6 +14,10 @@ document.addEventListener('click', (event) => {
     if (clickedButton && event.isTrusted) {
         console.log(`Neptun Tweaks: Manual click detected! Loading up to the limit again...`);
         clickCount = 0;
+        // Restart the interval if it was cleared after hitting the limit
+        if (!expanderInterval) {
+            startListExpander(MAX_CLICKS > 0 ? (MAX_CLICKS + 1) * 10 : 500);
+        }
     }
 });
 
@@ -27,6 +31,7 @@ function startListExpander(limit = 500) {
 
     // Reset the counter every time you navigate to a new page
     clickCount = 0;
+    let idleTicks = 0; // counts ticks where the button isn't found
     console.log(`Neptun Tweaks: Auto-expander active. Limit set to ${limit} items (${MAX_CLICKS} clicks).`);
 
     // Run the check 10 times a second
@@ -34,13 +39,29 @@ function startListExpander(limit = 500) {
 
         const loadMoreBtn = document.querySelector('button#next-visible-button, button#user-list-load-more');
 
-        // If the button exists, isn't disabled, AND we haven't hit our limit...
-        if (loadMoreBtn && !loadMoreBtn.disabled) {
-            if (clickCount < MAX_CLICKS) {
-                // Click it and increase our counter
-                loadMoreBtn.click();
-                clickCount++;
+        if (!loadMoreBtn) {
+            idleTicks++;
+            // Stop polling if the button hasn't appeared for 5 seconds
+            if (idleTicks >= 50) {
+                clearInterval(expanderInterval);
+                expanderInterval = null;
             }
+            return;
+        }
+
+        idleTicks = 0; // button is present, reset idle counter
+
+        // If the button exists, isn't disabled, AND we haven't hit our limit...
+        if (!loadMoreBtn.disabled && clickCount < MAX_CLICKS) {
+            loadMoreBtn.click();
+            clickCount++;
+        }
+
+        // Stop polling once we've hit the limit
+        if (clickCount >= MAX_CLICKS) {
+            console.log(`Neptun Tweaks: Reached limit of ${limit} items. Stopping auto-expander.`);
+            clearInterval(expanderInterval);
+            expanderInterval = null;
         }
 
     }, 100);

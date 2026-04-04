@@ -27,7 +27,9 @@
   "content_scripts": [
     {
       "matches": ["https://neptun.bme.hu/hallgatoi/*"],
+      "css": ["content.css"],
       "js": [
+        "modules/defaults.js",
         "modules/headerImage.js",
         "modules/listExpander.js",
         "modules/homePageExpander.js",
