@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Neptun Tweaks",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Custom tweaks for the Neptun dashboard.",
   "browser_specific_settings": {
     "gecko": {
@@ -26,8 +26,12 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://neptun.bme.hu/hallgatoi/*"],
-      "css": ["content.css"],
+      "matches": [
+        "https://neptun.bme.hu/hallgatoi/*"
+      ],
+      "css": [
+        "content.css"
+      ],
       "js": [
         "modules/defaults.js",
         "modules/headerImage.js",
