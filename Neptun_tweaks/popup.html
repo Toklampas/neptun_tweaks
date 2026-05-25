@@ -169,7 +169,8 @@
 </head>
 
 <body>
-  <h3>Neptun Tweaks</h3>
+  <div id="mainPage">
+    <h3>Neptun Tweaks</h3>
 
   <div class="toggle-row">
     <label for="bgToggle" title="Replace the default dashboard header with a custom background image or solid color.">Custom Dashboard Background</label>
@@ -179,40 +180,7 @@
     </label>
   </div>
 
-  <div class="toggle-row" id="bgTypeRow">
-    <label for="bgTypeSelect" title="Choose between a custom image URL or a solid color for the dashboard background.">Background Type</label>
-    <select id="bgTypeSelect" class="url-input" style="width: 80px; margin-bottom: 0; padding: 4px;">
-      <option value="image">Image</option>
-      <option value="color">Color</option>
-    </select>
-  </div>
-
-  <div class="toggle-row" id="bgColorRow" style="display: none;">
-    <label for="bgColorInput">Choose Color / Hex</label>
-    <div style="display: flex; gap: 8px; align-items: center;">
-      <input type="color" id="bgColorInput"
-        style="cursor: pointer; width: 36px; height: 26px; border: 1px solid #ccc; border-radius: 4px; padding: 0; background: none;">
-      <input type="text" id="bgHexInput" 
-        style="width: 70px; padding: 4px; border: 1px solid #ccc; border-radius: 4px; font-family: monospace; text-align: center; margin-bottom: 0;" placeholder="#1c2c42">
-    </div>
-  </div>
-
-  <input type="text" id="bgUrlInput" class="url-input" placeholder="Paste image URL here...">
-
-  <div class="shift-controls" id="shiftControls">
-    <div class="shift-btn-group">
-      <button id="bgPosUp5" class="shift-btn" title="Up 5%">▲5</button>
-      <button id="bgPosUp1" class="shift-btn" title="Up 1%">▲1</button>
-    </div>
-
-    <span id="bgPosValue">50%</span>
-
-    <div class="shift-btn-group">
-      <button id="bgPosDown1" class="shift-btn" title="Down 1%">▼1</button>
-      <button id="bgPosDown5" class="shift-btn" title="Down 5%">▼5</button>
-      <button id="bgPosReset" class="shift-btn" title="Reset to 50%">↺</button>
-    </div>
-  </div>
+  <button id="viewBgSettingsBtn" class="shift-btn" style="width: 100%; margin-bottom: 15px; padding: 6px;">Customize Background</button>
 
   <hr class="separator">
 
@@ -275,10 +243,73 @@
     </label>
   </div>
 
+  <hr class="separator">
+
+  <div class="toggle-row">
+    <label for="autoExamToggle" title="Automatically click 'Felvétel' for targeted exams. Target exams directly on the exam registration page.">Auto Exam Registration</label>
+    <label class="switch">
+      <input type="checkbox" id="autoExamToggle">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <button id="viewTargetsBtn" class="shift-btn" style="width: 100%; margin-bottom: 15px; padding: 6px;">View Selected Exams (0)</button>
+
   <div class="note">Refresh Neptun if the changes didn't apply automatically.</div>
 
   <div style="text-align: center; margin-top: 10px;">
     <a href="#" id="openOptionsPage" style="color: #0056b3; font-size: 12px; text-decoration: none;">⧉ Open Settings in Full Tab</a>
+  </div>
+  </div>
+
+  <div id="targetsPage" style="display: none;">
+    <h3>Selected Exams</h3>
+    <button id="backToMainBtn" class="shift-btn" style="margin-bottom: 15px;">← Back to Settings</button>
+    
+    <div id="autoExamTargetsContainer" style="background: #fff; border: 1px solid #ccc; border-radius: 6px; padding: 8px; margin-bottom: 15px;">
+      <ul id="autoExamTargetsList" style="list-style-type: none; padding-left: 0; margin: 0; font-size: 11px; color: #333;"></ul>
+      <button id="clearExamTargetsBtn" class="shift-btn" style="width: 100%; margin-top: 8px;">Clear Targets</button>
+    </div>
+  </div>
+
+  <div id="bgSettingsPage" style="display: none;">
+    <h3>Background Settings</h3>
+    <button id="backToMainFromBgBtn" class="shift-btn" style="margin-bottom: 15px;">← Back to Settings</button>
+    
+    <div class="toggle-row" id="bgTypeRow">
+      <label for="bgTypeSelect" title="Choose between a custom image URL or a solid color for the dashboard background.">Background Type</label>
+      <select id="bgTypeSelect" class="url-input" style="width: 80px; margin-bottom: 0; padding: 4px;">
+        <option value="image">Image</option>
+        <option value="color">Color</option>
+      </select>
+    </div>
+
+    <div class="toggle-row" id="bgColorRow" style="display: none;">
+      <label for="bgColorInput">Choose Color / Hex</label>
+      <div style="display: flex; gap: 8px; align-items: center;">
+        <input type="color" id="bgColorInput"
+          style="cursor: pointer; width: 36px; height: 26px; border: 1px solid #ccc; border-radius: 4px; padding: 0; background: none;">
+        <input type="text" id="bgHexInput" 
+          style="width: 70px; padding: 4px; border: 1px solid #ccc; border-radius: 4px; font-family: monospace; text-align: center; margin-bottom: 0;" placeholder="#1c2c42">
+      </div>
+    </div>
+
+    <input type="text" id="bgUrlInput" class="url-input" placeholder="Paste image URL here...">
+
+    <div class="shift-controls" id="shiftControls">
+      <div class="shift-btn-group">
+        <button id="bgPosUp5" class="shift-btn" title="Up 5%">▲5</button>
+        <button id="bgPosUp1" class="shift-btn" title="Up 1%">▲1</button>
+      </div>
+
+      <span id="bgPosValue">50%</span>
+
+      <div class="shift-btn-group">
+        <button id="bgPosDown1" class="shift-btn" title="Down 1%">▼1</button>
+        <button id="bgPosDown5" class="shift-btn" title="Down 5%">▼5</button>
+        <button id="bgPosReset" class="shift-btn" title="Reset to 50%">↺</button>
+      </div>
+    </div>
   </div>
 
   <script src="modules/defaults.js"></script>

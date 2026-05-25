@@ -49,12 +49,22 @@ function determinePageAndRun() {
         }
         
         if (location.href.includes('/dashboard')) {
+            if (settings.featureAutoExam && !sessionStorage.getItem('neptunTweaksAutoExamRedirected')) {
+                sessionStorage.setItem('neptunTweaksAutoExamRedirected', 'true');
+                console.log("Neptun Tweaks: Auto Exam is ON. Redirecting to Exams page...");
+                window.location.href = location.href.replace('/dashboard', '/exams/overview/registration');
+                return;
+            }
             startDashboardTweaks(settings);
         } else if (location.href.includes('/login')) {
             if (settings.featureServerInfo) {
                 startServerInfoMirror();
             } else {
                 removeServerInfoMirror();
+            }
+        } else if (location.href.includes('/exams')) {
+            if (typeof startAutoExamRegistration === 'function') {
+                startAutoExamRegistration(settings);
             }
         }
     });

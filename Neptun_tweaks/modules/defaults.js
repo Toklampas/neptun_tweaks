@@ -11,5 +11,8 @@ const NEPTUN_TWEAKS_DEFAULTS = {
     featureListExpand: true,
     listExpandLimit: 100,
     featureServerInfo: true,
-    featureAutoFilter: true
+    featureAutoFilter: true,
+    featureAutoExam: false,
+    autoExamTargets: []
 };
+

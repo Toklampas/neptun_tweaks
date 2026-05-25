@@ -41,6 +41,7 @@
         "modules/calendarButton.js",
         "modules/serverInfoMirror.js",
         "modules/filterTweaks.js",
+        "modules/examRegistration.js",
         "main.js"
       ]
     }

@@ -27,6 +27,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const listLimitRow = document.getElementById('listLimitRow');
     const serverInfoToggle = document.getElementById('serverInfoToggle');
     const autoFilterToggle = document.getElementById('autoFilterToggle');
+    const autoExamToggle = document.getElementById('autoExamToggle');
+    const autoExamTargetsContainer = document.getElementById('autoExamTargetsContainer');
+    const autoExamTargetsList = document.getElementById('autoExamTargetsList');
+    const clearExamTargetsBtn = document.getElementById('clearExamTargetsBtn');
+    
+    // Page switching elements
+    const mainPage = document.getElementById('mainPage');
+    const targetsPage = document.getElementById('targetsPage');
+    const viewTargetsBtn = document.getElementById('viewTargetsBtn');
+    const backToMainBtn = document.getElementById('backToMainBtn');
+    
+    const bgSettingsPage = document.getElementById('bgSettingsPage');
+    const viewBgSettingsBtn = document.getElementById('viewBgSettingsBtn');
+    const backToMainFromBgBtn = document.getElementById('backToMainFromBgBtn');
     
     // Position controls
     const shiftControls = document.getElementById('shiftControls');
@@ -49,6 +63,9 @@ document.addEventListener('DOMContentLoaded', () => {
         listExpandLimit.value = settings.listExpandLimit;
         serverInfoToggle.checked = settings.featureServerInfo;
         autoFilterToggle.checked = settings.featureAutoFilter;
+        autoExamToggle.checked = settings.featureAutoExam;
+        
+        renderAutoExamTargets(settings.autoExamTargets || []);
         
         bgHexInput.value = settings.bgColor;
         
@@ -61,6 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateBackgroundControlsState(isEnabled, bgType) {
         bgTypeSelect.disabled = !isEnabled;
         bgTypeRow.style.opacity = isEnabled ? '1' : '0.5';
+        viewBgSettingsBtn.disabled = !isEnabled;
 
         if (bgType === 'color') {
             bgColorRow.style.display = 'flex';
@@ -181,6 +199,105 @@ document.addEventListener('DOMContentLoaded', () => {
 
     autoFilterToggle.addEventListener('change', () => {
         chrome.storage.local.set({ featureAutoFilter: autoFilterToggle.checked });
+    });
+
+    autoExamToggle.addEventListener('change', () => {
+        chrome.storage.local.set({ featureAutoExam: autoExamToggle.checked });
+    });
+
+    function renderAutoExamTargets(targets) {
+        if (!targets || targets.length === 0) {
+            autoExamTargetsList.innerHTML = '<li style="color: #777; text-align: center;">No exams selected.</li>';
+            clearExamTargetsBtn.style.display = 'none';
+            viewTargetsBtn.textContent = 'View Selected Exams (0)';
+        } else {
+            clearExamTargetsBtn.style.display = 'block';
+            viewTargetsBtn.textContent = `View Selected Exams (${targets.length})`;
+            autoExamTargetsList.innerHTML = '';
+            targets.forEach((target, index) => {
+                const parts = target.split('||');
+                const subject = parts[0] || 'Unknown';
+                const date = parts[1] || '';
+                const type = parts[2] ? ` (${parts[2]})` : '';
+                
+                const li = document.createElement('li');
+                li.style.marginBottom = '4px';
+                li.style.borderBottom = '1px dashed #eee';
+                li.style.paddingBottom = '4px';
+                li.style.display = 'flex';
+                li.style.justifyContent = 'space-between';
+                li.style.alignItems = 'center';
+
+                const textSpan = document.createElement('span');
+                textSpan.innerText = `${index + 1}. ${subject} - ${date}${type}`;
+                textSpan.style.flex = '1';
+                textSpan.style.paddingRight = '5px';
+
+                const btnGroup = document.createElement('div');
+                btnGroup.style.display = 'flex';
+                btnGroup.style.gap = '2px';
+
+                const upBtn = document.createElement('button');
+                upBtn.innerHTML = '▲';
+                upBtn.className = 'shift-btn';
+                upBtn.style.padding = '1px 4px';
+                upBtn.style.fontSize = '9px';
+                upBtn.disabled = index === 0;
+                upBtn.onclick = () => {
+                    const temp = targets[index - 1];
+                    targets[index - 1] = targets[index];
+                    targets[index] = temp;
+                    chrome.storage.local.set({ autoExamTargets: targets });
+                    renderAutoExamTargets(targets);
+                };
+
+                const downBtn = document.createElement('button');
+                downBtn.innerHTML = '▼';
+                downBtn.className = 'shift-btn';
+                downBtn.style.padding = '1px 4px';
+                downBtn.style.fontSize = '9px';
+                downBtn.disabled = index === targets.length - 1;
+                downBtn.onclick = () => {
+                    const temp = targets[index + 1];
+                    targets[index + 1] = targets[index];
+                    targets[index] = temp;
+                    chrome.storage.local.set({ autoExamTargets: targets });
+                    renderAutoExamTargets(targets);
+                };
+
+                btnGroup.appendChild(upBtn);
+                btnGroup.appendChild(downBtn);
+                
+                li.appendChild(textSpan);
+                li.appendChild(btnGroup);
+                autoExamTargetsList.appendChild(li);
+            });
+        }
+    }
+
+    clearExamTargetsBtn.addEventListener('click', () => {
+        chrome.storage.local.set({ autoExamTargets: [] });
+        renderAutoExamTargets([]);
+    });
+
+    viewTargetsBtn.addEventListener('click', () => {
+        mainPage.style.display = 'none';
+        targetsPage.style.display = 'block';
+    });
+
+    backToMainBtn.addEventListener('click', () => {
+        targetsPage.style.display = 'none';
+        mainPage.style.display = 'block';
+    });
+
+    viewBgSettingsBtn.addEventListener('click', () => {
+        mainPage.style.display = 'none';
+        bgSettingsPage.style.display = 'block';
+    });
+
+    backToMainFromBgBtn.addEventListener('click', () => {
+        bgSettingsPage.style.display = 'none';
+        mainPage.style.display = 'block';
     });
 
     if (openOptionsPage) {
