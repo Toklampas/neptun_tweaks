@@ -93,9 +93,130 @@ body.neptun-tweaks-custom-bg h3.header__title {
 
 body.neptun-tweaks-custom-bg #neptun-ext-version {
     color: white;
-    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 1), 0 0 4px rgba(0, 0, 0, 0.8);
 }
 
 body.neptun-tweaks-custom-bg #neptun-ext-version:hover {
     color: #add8e6;
+}
+
+/* ============================================
+   Dark Mode (Filter-based)
+   ============================================ */
+html.neptun-tweaks-dark-mode {
+    /* Inverts colors (white -> black) and rotates hue back to keep blues blue.
+       Using invert(1) instead of 0.88 ensures perfect mathematical un-inversion. */
+    filter: invert(1) hue-rotate(180deg) !important;
+    background-color: #ffffff !important;
+}
+
+/* Un-invert images and media so they look normal */
+html.neptun-tweaks-dark-mode img,
+html.neptun-tweaks-dark-mode picture,
+html.neptun-tweaks-dark-mode video,
+html.neptun-tweaks-dark-mode canvas,
+html.neptun-tweaks-dark-mode iframe,
+html.neptun-tweaks-dark-mode svg {
+    filter: invert(1) hue-rotate(180deg) !important;
+}
+
+/* Allow login screen background wave SVGs to invert properly */
+html.neptun-tweaks-dark-mode #background-path,
+html.neptun-tweaks-dark-mode .background-path-bottom {
+    filter: none !important;
+}
+
+/* Un-invert the custom background header image so it doesn't look terrifying */
+html.neptun-tweaks-dark-mode div.primary-bg-wrapper {
+    filter: invert(1) hue-rotate(180deg) !important;
+}
+
+/* Re-invert specific white cards/boxes that sit inside the primary-bg-wrapper so they properly turn dark */
+html.neptun-tweaks-dark-mode div.primary-bg-wrapper .module-selection,
+html.neptun-tweaks-dark-mode div.primary-bg-wrapper .module-base-data {
+    filter: invert(1) hue-rotate(180deg) !important;
+}
+
+/* Prevent images inside the wrapper from being double-un-inverted! */
+html.neptun-tweaks-dark-mode div.primary-bg-wrapper img {
+    filter: none !important;
+}
+
+/* Re-invert lightgrey buttons inside the un-inverted footer so they become dark */
+html.neptun-tweaks-dark-mode neptun-footer .flat.lightgrey {
+    filter: invert(1) hue-rotate(180deg) !important;
+}
+
+/* Restore the extra inversion for images inside the re-inverted boxes */
+html.neptun-tweaks-dark-mode div.primary-bg-wrapper .module-selection img,
+html.neptun-tweaks-dark-mode div.primary-bg-wrapper .module-base-data img {
+    filter: invert(1) hue-rotate(180deg) !important;
+}
+
+
+
+/* Ensure our own calendar button doesn't look weird if it gets double inverted */
+html.neptun-tweaks-dark-mode #neptun-tweaks-calendar-btn {
+    filter: invert(1) hue-rotate(180deg) !important;
+}
+
+/* 
+ * ============================================
+ * UN-INVERT LIST FOR BLUE ACCENTS AND EXCLUSIONS
+ * ============================================
+ * We will add specific classes here based on what you want to exclude!
+ */
+html.neptun-tweaks-dark-mode neptun-notification-bar,
+html.neptun-tweaks-dark-mode #menu-btn,
+html.neptun-tweaks-dark-mode .submenu,
+html.neptun-tweaks-dark-mode neptun-footer,
+html.neptun-tweaks-dark-mode .monogram-bg,
+html.neptun-tweaks-dark-mode .tab.selected .tab-button,
+html.neptun-tweaks-dark-mode .flat.primary,
+html.neptun-tweaks-dark-mode .flat.tertiary,
+html.neptun-tweaks-dark-mode [class*="neptun-icon-circle--"],
+html.neptun-tweaks-dark-mode .cdk-overlay-backdrop,
+html.neptun-tweaks-dark-mode mat-dialog-actions,
+html.neptun-tweaks-dark-mode .mat-mdc-dialog-actions,
+html.neptun-tweaks-dark-mode neptun-table-actions-bar,
+html.neptun-tweaks-dark-mode .timetable-planner__container,
+html.neptun-tweaks-dark-mode .mat-mdc-checkbox-checked .mdc-checkbox__background,
+html.neptun-tweaks-dark-mode .mat-mdc-unelevated-button.mat-primary,
+html.neptun-tweaks-dark-mode .mat-mdc-raised-button.mat-primary {
+    filter: invert(1) hue-rotate(180deg) !important;
+}
+
+/* Prevent double un-inversion for buttons inside the dialog and table actions bars */
+html.neptun-tweaks-dark-mode mat-dialog-actions .flat.primary,
+html.neptun-tweaks-dark-mode mat-dialog-actions .flat.tertiary,
+html.neptun-tweaks-dark-mode mat-dialog-actions .mat-mdc-unelevated-button.mat-primary,
+html.neptun-tweaks-dark-mode mat-dialog-actions .mat-mdc-raised-button.mat-primary,
+html.neptun-tweaks-dark-mode .mat-mdc-dialog-actions .flat.primary,
+html.neptun-tweaks-dark-mode .mat-mdc-dialog-actions .flat.tertiary,
+html.neptun-tweaks-dark-mode .mat-mdc-dialog-actions .mat-mdc-unelevated-button.mat-primary,
+html.neptun-tweaks-dark-mode .mat-mdc-dialog-actions .mat-mdc-raised-button.mat-primary,
+html.neptun-tweaks-dark-mode neptun-table-actions-bar .flat.primary,
+html.neptun-tweaks-dark-mode neptun-table-actions-bar .flat.tertiary,
+html.neptun-tweaks-dark-mode neptun-table-actions-bar .mat-mdc-unelevated-button.mat-primary,
+html.neptun-tweaks-dark-mode neptun-table-actions-bar .mat-mdc-raised-button.mat-primary,
+html.neptun-tweaks-dark-mode .timetable-planner__container .flat.primary,
+html.neptun-tweaks-dark-mode .timetable-planner__container .flat.tertiary,
+html.neptun-tweaks-dark-mode .timetable-planner__container .mat-mdc-unelevated-button.mat-primary,
+html.neptun-tweaks-dark-mode .timetable-planner__container .mat-mdc-raised-button.mat-primary {
+    filter: none !important;
+}
+
+/* Provide a visible highlight for selected table rows in dark mode */
+html.neptun-tweaks-dark-mode tr.row-selected,
+html.neptun-tweaks-dark-mode tr.mat-mdc-row.row-selected {
+    background-color: #dddddd !important;
+    /* Inverts to a noticeable #222222 dark grey */
+}
+
+
+
+
+/* Protect the custom background wrapper from background overrides */
+html.neptun-tweaks-dark-mode div.primary-bg-wrapper {
+    background-color: transparent !important;
 }

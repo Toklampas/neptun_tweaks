@@ -165,12 +165,85 @@
     input:checked+.slider:before {
       transform: translateX(16px);
     }
+
+    /* --- Dark Mode CSS --- */
+    body.dark-mode {
+      background-color: #222;
+      color: #eee;
+    }
+
+    body.dark-mode h3 {
+      border-bottom-color: #4ea8ff;
+    }
+
+    body.dark-mode .url-input {
+      background-color: #333;
+      color: #eee;
+      border-color: #555;
+    }
+
+    body.dark-mode .url-input:disabled {
+      background-color: #444;
+      color: #aaa;
+      border-color: #666;
+    }
+
+    body.dark-mode .shift-controls {
+      background: #333;
+      color: #eee;
+    }
+
+    body.dark-mode .shift-btn {
+      background-color: #222;
+      border-color: #555;
+      color: #eee;
+    }
+
+    body.dark-mode .shift-btn:hover:not(:disabled) {
+      background-color: #444;
+      border-color: #4ea8ff;
+    }
+
+    body.dark-mode .shift-btn:disabled {
+      border-color: #444;
+    }
+
+    body.dark-mode hr.separator {
+      border-top-color: #444;
+    }
+
+    body.dark-mode #autoExamTargetsContainer {
+      background: #333 !important;
+      border-color: #555 !important;
+    }
+
+    body.dark-mode #autoExamTargetsList {
+      color: #eee !important;
+    }
+
+    body.dark-mode #autoExamTargetsList li {
+      border-bottom-color: #444 !important;
+    }
+
+    body.dark-mode a#openOptionsPage {
+      color: #4ea8ff !important;
+    }
   </style>
 </head>
 
 <body>
   <div id="mainPage">
     <h3>Neptun Tweaks</h3>
+
+  <div class="toggle-row">
+    <label for="darkModeToggle" title="Enable dark mode for the entire Neptun site.">Dark Mode</label>
+    <label class="switch">
+      <input type="checkbox" id="darkModeToggle">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <hr class="separator">
 
   <div class="toggle-row">
     <label for="bgToggle" title="Replace the default dashboard header with a custom background image or solid color.">Custom Dashboard Background</label>

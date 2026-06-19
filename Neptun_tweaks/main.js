@@ -39,6 +39,10 @@ function startDashboardTweaks(settings) {
 function determinePageAndRun() {
     chrome.storage.local.get(NEPTUN_TWEAKS_DEFAULTS, (settings) => {
 
+        if (typeof startDarkMode === 'function') {
+            startDarkMode(settings.featureDarkMode);
+        }
+
         if (settings.featureListExpand) {
             startListExpander(settings.listExpandLimit);
         }
@@ -94,27 +98,33 @@ setInterval(onUrlChange, 1000);
 // --- 3. NEW: Live Settings Listener ---
 // This listens for any changes made in the popup menu in real-time
 chrome.storage.onChanged.addListener((changes, namespace) => {
-    // Only react if we are actually looking at the dashboard
-    if (namespace === 'local' && location.href.includes('/dashboard')) {
-
+    if (namespace === 'local') {
         // Grab the freshest settings
         chrome.storage.local.get(NEPTUN_TWEAKS_DEFAULTS, (settings) => {
-            let urlToUse = settings.backgroundUrl.trim();
-            if (urlToUse === '') {
-                urlToUse = DEFAULT_BACKGROUND_URL;
+            
+            // Instantly apply dark mode on any page
+            if (typeof startDarkMode === 'function') {
+                startDarkMode(settings.featureDarkMode);
             }
 
-            // Instantly apply the changes to the DOM!
-            if (typeof window.updateLiveBackground === 'function') {
-                window.updateLiveBackground(settings.featureBackground, settings.bgType, urlToUse, settings.bgPositionY, settings.bgColor);
-            }
-        });
-    } else if (namespace === 'local' && location.href.includes('/login')) {
-        chrome.storage.local.get({ featureServerInfo: true }, (settings) => {
-            if (settings.featureServerInfo) {
-                startServerInfoMirror();
-            } else {
-                removeServerInfoMirror();
+            // Dashboard-specific live updates
+            if (location.href.includes('/dashboard')) {
+                let urlToUse = settings.backgroundUrl.trim();
+                if (urlToUse === '') {
+                    urlToUse = DEFAULT_BACKGROUND_URL;
+                }
+
+                if (typeof window.updateLiveBackground === 'function') {
+                    window.updateLiveBackground(settings.featureBackground, settings.bgType, urlToUse, settings.bgPositionY, settings.bgColor);
+                }
+            } 
+            // Login-specific live updates
+            else if (location.href.includes('/login')) {
+                if (settings.featureServerInfo) {
+                    startServerInfoMirror();
+                } else {
+                    removeServerInfoMirror();
+                }
             }
         });
     }

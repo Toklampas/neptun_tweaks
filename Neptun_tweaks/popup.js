@@ -1,6 +1,7 @@
 // popup.js
 
 document.addEventListener('DOMContentLoaded', () => {
+    const darkModeToggle = document.getElementById('darkModeToggle');
     const bgToggle = document.getElementById('bgToggle');
     const bgUrlInput = document.getElementById('bgUrlInput');
     const bgTypeSelect = document.getElementById('bgTypeSelect');
@@ -53,6 +54,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 1. Load settings
     chrome.storage.local.get(NEPTUN_TWEAKS_DEFAULTS, (settings) => {
+        darkModeToggle.checked = settings.featureDarkMode;
+        document.body.classList.toggle('dark-mode', settings.featureDarkMode);
         bgToggle.checked = settings.featureBackground;
         bgTypeSelect.value = settings.bgType;
         bgColorInput.value = settings.bgColor;
@@ -106,6 +109,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 2. Save settings when toggled/typed
+    darkModeToggle.addEventListener('change', () => {
+        chrome.storage.local.set({ featureDarkMode: darkModeToggle.checked });
+        document.body.classList.toggle('dark-mode', darkModeToggle.checked);
+    });
+
     bgToggle.addEventListener('change', () => {
         chrome.storage.local.set({ featureBackground: bgToggle.checked });
         updateBackgroundControlsState(bgToggle.checked, bgTypeSelect.value);
