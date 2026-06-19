@@ -42,6 +42,7 @@
         "modules/serverInfoMirror.js",
         "modules/filterTweaks.js",
         "modules/examRegistration.js",
+        "modules/darkMode.js",
         "main.js"
       ]
     }

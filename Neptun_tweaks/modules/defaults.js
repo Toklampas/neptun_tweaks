@@ -1,6 +1,7 @@
 // modules/defaults.js
 
 const NEPTUN_TWEAKS_DEFAULTS = {
+    featureDarkMode: false,
     featureBackground: true,
     bgType: 'image',
     bgColor: '#0056b3',
