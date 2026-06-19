@@ -276,8 +276,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     clearExamTargetsBtn.addEventListener('click', () => {
-        chrome.storage.local.set({ autoExamTargets: [] });
-        renderAutoExamTargets([]);
+        if (confirm("Are you sure you want to clear all saved exams for auto registration?\n\nThis cannot be undone.")) {
+            chrome.storage.local.set({ autoExamTargets: [] });
+            renderAutoExamTargets([]);
+        }
     });
 
     viewTargetsBtn.addEventListener('click', () => {
