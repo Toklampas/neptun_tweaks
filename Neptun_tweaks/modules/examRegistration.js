@@ -56,7 +56,8 @@ function startAutoExamRegistration(settings) {
             rows.forEach(row => {
                 // 1. Get Date
                 const dateCell = row.querySelector('td.mat-column-fromDate');
-                const dateStr = dateCell ? dateCell.textContent.trim().replace(/\s+/g, ' ') : 'Unknown Date';
+                let dateStr = dateCell ? dateCell.textContent.trim().replace(/\s+/g, ' ') : 'Unknown Date';
+                dateStr = dateStr.replace(/Betelt/gi, '').trim();
 
                 // 2. Get Subject Name robustly
                 let subjectName = 'Unknown Subject';
