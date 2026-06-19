@@ -23,6 +23,9 @@ function startAutoExamRegistration(settings) {
 
     // Check every 500ms for dynamically loaded rows
     setInterval(() => {
+        // Only run on the Exam Registration page
+        if (!window.location.href.toLowerCase().includes('exams/overview/registration')) return;
+
         // If Neptun is already processing an action (showing a spinner), wait patiently.
         if (document.querySelector('.spinner.table-action')) return;
 
