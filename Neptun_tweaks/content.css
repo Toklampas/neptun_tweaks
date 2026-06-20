@@ -147,6 +147,11 @@ html.neptun-tweaks-dark-mode neptun-footer .flat.lightgrey {
     filter: invert(1) hue-rotate(180deg) !important;
 }
 
+/* Let the dark Neptun logo invert normally so it turns white/light-blue and is readable on black */
+html.neptun-tweaks-dark-mode img[src*="neptun-logo.svg"] {
+    filter: none !important;
+}
+
 /* Restore the extra inversion for images inside the re-inverted boxes */
 html.neptun-tweaks-dark-mode div.primary-bg-wrapper .module-selection img,
 html.neptun-tweaks-dark-mode div.primary-bg-wrapper .module-base-data img {
@@ -213,10 +218,31 @@ html.neptun-tweaks-dark-mode tr.mat-mdc-row.row-selected {
     /* Inverts to a noticeable #222222 dark grey */
 }
 
+/* Table Status Bars (Left edge colors) */
+html.neptun-tweaks-dark-mode .mat-mdc-table td.mat-mdc-cell:first-child {
+    filter: invert(1) hue-rotate(180deg) !important;
+    background-color: transparent !important;
+    border-bottom: 1px solid #dddddd !important;
+    /* Inverts to dark mode grid line color */
+}
 
-
+html.neptun-tweaks-dark-mode .mat-mdc-table td.mat-mdc-cell:first-child>* {
+    filter: invert(1) hue-rotate(180deg) !important;
+}
 
 /* Protect the custom background wrapper from background overrides */
 html.neptun-tweaks-dark-mode div.primary-bg-wrapper {
     background-color: transparent !important;
+}
+
+/* Replace inverted glowing white drop shadows with premium dark mode subtle outlines and ambient glow */
+html.neptun-tweaks-dark-mode .mat-expansion-panel,
+html.neptun-tweaks-dark-mode .mat-mdc-card,
+html.neptun-tweaks-dark-mode .mat-mdc-dialog-surface,
+html.neptun-tweaks-dark-mode .mat-mdc-menu-panel,
+html.neptun-tweaks-dark-mode .mat-mdc-select-panel,
+html.neptun-tweaks-dark-mode .module-selection,
+html.neptun-tweaks-dark-mode .module-base-data {
+    box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.06), 0px 0px 0px 1px rgba(0, 0, 0, 0.05) !important;
+    /* Inverts to a very faint 6% white ambient shadow and 5% white outline */
 }
