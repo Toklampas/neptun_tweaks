@@ -263,3 +263,15 @@ html.neptun-tweaks-dark-mode .dot,
 html.neptun-tweaks-dark-mode .dot.dot-active {
     box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.5) !important;
     /* Inverts to a 50% opaque white ring */
+}
+
+/* Make message titles lighter in dark mode so they are easier to read */
+html.neptun-tweaks-dark-mode .message-header__title {
+    color: #ffffff !important;
+}
+
+/* Fix the bright white border on the message box in dark mode */
+html.neptun-tweaks-dark-mode neptun-messages .wrapper,
+html.neptun-tweaks-dark-mode .message-container .wrapper {
+    border-color: #000000 !important;
+}

@@ -7,7 +7,7 @@ let MAX_CLICKS = 50; // 50 clicks * 10 items = 500 items
 // We add a listener to the whole document to watch for your manual clicks
 document.addEventListener('click', (event) => {
     // 1. Did the click happen on or inside our target button?
-    const clickedButton = event.target.closest('button#next-visible-button, button#user-list-load-more');
+    const clickedButton = event.target.closest('button#next-visible-button, button#user-list-load-more, button.load-more');
 
     // 2. event.isTrusted is TRUE only if a real human clicked the mouse.
     // If it's true, it means YOU clicked it, so we reset the counter to 0!
@@ -37,7 +37,7 @@ function startListExpander(limit = 500) {
     // Run the check 10 times a second
     expanderInterval = setInterval(() => {
 
-        const loadMoreBtn = document.querySelector('button#next-visible-button, button#user-list-load-more');
+        const loadMoreBtn = document.querySelector('button#next-visible-button, button#user-list-load-more, button.load-more');
 
         if (!loadMoreBtn) {
             idleTicks++;
