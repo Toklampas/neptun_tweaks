@@ -138,7 +138,9 @@ html.neptun-tweaks-dark-mode div.primary-bg-wrapper .module-base-data {
 }
 
 /* Prevent images inside the wrapper from being double-un-inverted! */
-html.neptun-tweaks-dark-mode div.primary-bg-wrapper img {
+html.neptun-tweaks-dark-mode div.primary-bg-wrapper img,
+html.neptun-tweaks-dark-mode .wrapper img,
+html.neptun-tweaks-dark-mode .dialog_header img {
     filter: none !important;
 }
 
@@ -147,8 +149,10 @@ html.neptun-tweaks-dark-mode neptun-footer .flat.lightgrey {
     filter: invert(1) hue-rotate(180deg) !important;
 }
 
-/* Let the dark Neptun logo invert normally so it turns white/light-blue and is readable on black */
-html.neptun-tweaks-dark-mode img[src*="neptun-logo.svg"] {
+/* Let the dark logos invert normally so they turn white/light-blue and are readable on black */
+html.neptun-tweaks-dark-mode img[src*="neptun-logo.svg"],
+html.neptun-tweaks-dark-mode img[src$="/unipoll_logo.svg"],
+html.neptun-tweaks-dark-mode .logo-inverted {
     filter: none !important;
 }
 
@@ -171,10 +175,13 @@ html.neptun-tweaks-dark-mode #neptun-tweaks-calendar-btn {
  * ============================================
  * We will add specific classes here based on what you want to exclude!
  */
+html.neptun-tweaks-dark-mode .push-notifications__header,
 html.neptun-tweaks-dark-mode neptun-notification-bar,
 html.neptun-tweaks-dark-mode #menu-btn,
 html.neptun-tweaks-dark-mode .submenu,
-html.neptun-tweaks-dark-mode neptun-footer,
+html.neptun-tweaks-dark-mode.neptun-tweaks-site-main footer,
+html.neptun-tweaks-dark-mode.neptun-tweaks-site-unipoll footer,
+html.neptun-tweaks-dark-mode .wrapper,
 html.neptun-tweaks-dark-mode .monogram-bg,
 html.neptun-tweaks-dark-mode .tab.selected .tab-button,
 html.neptun-tweaks-dark-mode .flat.primary,
@@ -192,6 +199,7 @@ html.neptun-tweaks-dark-mode .mat-mdc-raised-button.mat-primary {
 }
 
 /* Prevent double un-inversion for buttons inside the dialog and table actions bars */
+html.neptun-tweaks-dark-mode .wrapper footer,
 html.neptun-tweaks-dark-mode mat-dialog-actions .flat.primary,
 html.neptun-tweaks-dark-mode mat-dialog-actions .flat.tertiary,
 html.neptun-tweaks-dark-mode mat-dialog-actions .mat-mdc-unelevated-button.mat-primary,
@@ -238,11 +246,20 @@ html.neptun-tweaks-dark-mode div.primary-bg-wrapper {
 /* Replace inverted glowing white drop shadows with premium dark mode subtle outlines and ambient glow */
 html.neptun-tweaks-dark-mode .mat-expansion-panel,
 html.neptun-tweaks-dark-mode .mat-mdc-card,
+html.neptun-tweaks-dark-mode neptun-card,
+html.neptun-tweaks-dark-mode .menu-card,
 html.neptun-tweaks-dark-mode .mat-mdc-dialog-surface,
 html.neptun-tweaks-dark-mode .mat-mdc-menu-panel,
 html.neptun-tweaks-dark-mode .mat-mdc-select-panel,
 html.neptun-tweaks-dark-mode .module-selection,
-html.neptun-tweaks-dark-mode .module-base-data {
-    box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.06), 0px 0px 0px 1px rgba(0, 0, 0, 0.05) !important;
+html.neptun-tweaks-dark-mode .module-base-data,
+html.neptun-tweaks-dark-mode .push-notifications {
+    box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.06), 0px 0px 0px 2px rgba(0, 0, 0, 0.05) !important;
     /* Inverts to a very faint 6% white ambient shadow and 5% white outline */
 }
+
+/* Add a crisp white ring around Unipoll navigation dots so they stand out */
+html.neptun-tweaks-dark-mode .dot,
+html.neptun-tweaks-dark-mode .dot.dot-active {
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.5) !important;
+    /* Inverts to a 50% opaque white ring */

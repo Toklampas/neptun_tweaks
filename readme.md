@@ -5,6 +5,8 @@
 Egy egyszerű böngésző bővítmény, aminek a célja, hogy kényelmesebbé tegye a Neptun új felületének és kezdőlapjának használatát.
 
 ## ✨ Funkciók
+* **Sötét mód:** Kíméld a szemed a beépített, prémium sötét témával, amely az egész Neptun felületén (és immár az Unipoll vizsgáztató felületen is) működik!
+* **Automata vizsgajelentkezés:** A vizsgajelentkezés oldalon bejelölheted a kiszemelt vizsgákat, és a bővítmény villámgyorsan, automatikusan rákattint a "Felvétel" gombra, amint az aktívvá válik. Ne maradj le a legjobb időpontokról!
 * **Egyedi háttér a kezdőlapon:** Lecseréli az alapértelmezett kék/lila felső sávot egy általad megadott képre, vagy egy letisztult, általad választott egyszínű háttérre. Az üdvözlő szöveget automatikusan fehérre színezi és kap egy kis árnyékot is, így bármilyen háttéren tökéletesen olvasható marad. Kép esetén az extension menüjében még finomhangolni is tudod a kép fókuszpontját!
 * **Gyors Naptár gomb:** A felső sávba, a keresőmező mellé automatikusan bekerül egy "Naptár" gomb, mellyel egyetlen kattintással elérheted a hallgatói órarendet, anélkül, hogy a menüben kéne keresgélned.
 * **Panelek automatikus kinyitása:** Unod már, hogy mindig kattintgatni kell a jegyeidhez vagy az üzeneteidhez? Ez a funkció a betöltés pillanatában rögtön lenyitja az összes összecsukott menüt a kezdőlapon (pl. *Vizsgák*, *Hírek*, *Eredmények*).
@@ -23,21 +25,10 @@ Egy egyszerű böngésző bővítmény, aminek a célja, hogy kényelmesebbé te
 4. **Bővítmény betöltése:** Kattints a bal felső sarokban megjelenő **"Kicsomagolt bővítmény betöltése"** (Load unpacked) gombra.
 5. **Válaszd ki a mappát:** Válaszd ki azt a `Neptun_tweaks` mappát, ahova kicsomagoltad a letöltött fájlokat (ahol a `manifest.json` is található).
 
-### 🦊 Firefox (ajánlott — .xpi fájl)
+### 🦊 Firefox
 
-1. **Töltsd le az .xpi fájlt:** Menj a [Releases](https://github.com/Toklampas/neptun_tweaks/releases) oldalra, és töltsd le a legújabb `.xpi` fájlt.
-2. **Telepítsd:** Firefoxban nyisd meg a letöltött `.xpi` fájlt (húzd a böngészőablakba, vagy válaszd a *Fájl → Megnyitás* opciót). A Firefox automatikusan felajánlja a telepítést.
-3. **Engedélyezd:** A felugró ablakban kattints a **"Hozzáadás"** (Add) gombra.
-
-### 🦊 Firefox (alternatív — ideiglenes telepítés)
-
-Ha nem az `.xpi` fájlt szeretnéd használni, fejlesztői módban is betöltheted:
-
-1. **Nyisd meg a Hibakeresőt:** Írd be a címsorba, hogy `about:debugging#/runtime/this-firefox`, majd nyomj Entert.
-2. **Kiegészítő betöltése:** Kattints az **"Ideiglenes kiegészítő betöltése..."** (Load Temporary Add-on...) gombra.
-3. **Válaszd ki a fájlt:** Keresd meg a kicsomagolt `Neptun_tweaks` mappát, és válaszd ki benne a `manifest.json` fájlt.
-
-*(Megjegyzés: Firefoxon az így betöltött bővítmények a böngésző újraindításakor eltűnnek, így bezárás után újra be kell őket tölteni.)*
+Töltsd le és telepítsd a bővítményt közvetlenül a hivatalos Firefox Add-ons oldalról:
+👉 **[Neptun Tweaks letöltése Firefoxra](https://addons.mozilla.org/en-US/firefox/addon/neptun-tweaks/)**
 
 ---
 **Kész is vagy!** A bővítmény most már aktív. Csak lépj be a Neptunba, vagy frissítsd az oldalt!
