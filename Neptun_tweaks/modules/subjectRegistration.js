@@ -28,7 +28,7 @@ function startAutoSubjectRegistration(settings) {
     // Phase 1: Page Setup — click tabs and select the right view
     // =========================================================
     function setupPageView(onComplete) {
-        // Give the page 3 seconds to fully render before interacting
+        // Give the page 2 seconds to fully render before interacting
         setTimeout(() => {
             // Step 1: Click the "Órarendtervező" tab
             waitAndClick(
@@ -71,7 +71,7 @@ function startAutoSubjectRegistration(settings) {
                 },
                 1000
             );
-        }, 3000);
+        }, 2000);
     }
 
     // =========================================================
