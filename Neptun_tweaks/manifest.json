@@ -43,6 +43,7 @@
         "modules/serverInfoMirror.js",
         "modules/filterTweaks.js",
         "modules/examRegistration.js",
+        "modules/subjectRegistration.js",
         "modules/darkMode.js",
         "main.js"
       ]

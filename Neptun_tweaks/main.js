@@ -53,6 +53,14 @@ function determinePageAndRun() {
         }
 
         if (location.href.includes('/dashboard')) {
+            if (settings.featureAutoSubjectRedirect && !sessionStorage.getItem('neptunTweaksAutoSubjectRedirected')) {
+                sessionStorage.setItem('neptunTweaksAutoSubjectRedirected', 'true');
+                console.log("Neptun Tweaks: Auto Subject Registration is ON. Redirecting to Tárgyfelvétel page in 2.5s...");
+                setTimeout(() => {
+                    window.location.href = location.href.replace('/dashboard', '/subjects/registration');
+                }, 2500);
+                return;
+            }
             if (settings.featureAutoExam && !sessionStorage.getItem('neptunTweaksAutoExamRedirected')) {
                 sessionStorage.setItem('neptunTweaksAutoExamRedirected', 'true');
                 console.log("Neptun Tweaks: Auto Exam is ON. Redirecting to Exams page...");
@@ -69,6 +77,10 @@ function determinePageAndRun() {
         } else if (location.href.includes('/exams')) {
             if (typeof startAutoExamRegistration === 'function') {
                 startAutoExamRegistration(settings);
+            }
+        } else if (location.href.includes('/subjects/registration')) {
+            if (typeof startAutoSubjectRegistration === 'function') {
+                startAutoSubjectRegistration(settings);
             }
         }
     });

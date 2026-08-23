@@ -29,6 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const serverInfoToggle = document.getElementById('serverInfoToggle');
     const autoFilterToggle = document.getElementById('autoFilterToggle');
     const autoExamToggle = document.getElementById('autoExamToggle');
+    const autoSubjectRedirectToggle = document.getElementById('autoSubjectRedirectToggle');
+    const autoSubjectToggle = document.getElementById('autoSubjectToggle');
     const autoExamTargetsContainer = document.getElementById('autoExamTargetsContainer');
     const autoExamTargetsList = document.getElementById('autoExamTargetsList');
     const clearExamTargetsBtn = document.getElementById('clearExamTargetsBtn');
@@ -67,6 +69,8 @@ document.addEventListener('DOMContentLoaded', () => {
         serverInfoToggle.checked = settings.featureServerInfo;
         autoFilterToggle.checked = settings.featureAutoFilter;
         autoExamToggle.checked = settings.featureAutoExam;
+        autoSubjectRedirectToggle.checked = settings.featureAutoSubjectRedirect;
+        autoSubjectToggle.checked = settings.featureAutoSubject;
         
         renderAutoExamTargets(settings.autoExamTargets || []);
         
@@ -210,7 +214,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     autoExamToggle.addEventListener('change', () => {
-        chrome.storage.local.set({ featureAutoExam: autoExamToggle.checked });
+        const updates = { featureAutoExam: autoExamToggle.checked };
+        if (autoExamToggle.checked) {
+            updates.featureAutoSubjectRedirect = false;
+            autoSubjectRedirectToggle.checked = false;
+        }
+        chrome.storage.local.set(updates);
+    });
+
+    autoSubjectRedirectToggle.addEventListener('change', () => {
+        const updates = { featureAutoSubjectRedirect: autoSubjectRedirectToggle.checked };
+        if (autoSubjectRedirectToggle.checked) {
+            updates.featureAutoExam = false;
+            autoExamToggle.checked = false;
+        }
+        chrome.storage.local.set(updates);
+    });
+
+    autoSubjectToggle.addEventListener('change', () => {
+        chrome.storage.local.set({ featureAutoSubject: autoSubjectToggle.checked });
     });
 
     function renderAutoExamTargets(targets) {
