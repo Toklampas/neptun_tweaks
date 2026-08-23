@@ -55,10 +55,10 @@ function determinePageAndRun() {
         if (location.href.includes('/dashboard')) {
             if (settings.featureAutoSubjectRedirect && !sessionStorage.getItem('neptunTweaksAutoSubjectRedirected')) {
                 sessionStorage.setItem('neptunTweaksAutoSubjectRedirected', 'true');
-                console.log("Neptun Tweaks: Auto Subject Registration is ON. Redirecting to Tárgyfelvétel page in 2.5s...");
+                console.log("Neptun Tweaks: Auto Subject Registration is ON. Redirecting to Tárgyfelvétel page in 1s...");
                 setTimeout(() => {
                     window.location.href = location.href.replace('/dashboard', '/subjects/registration');
-                }, 2500);
+                }, 1000);
                 return;
             }
             if (settings.featureAutoExam && !sessionStorage.getItem('neptunTweaksAutoExamRedirected')) {
@@ -73,6 +73,9 @@ function determinePageAndRun() {
                 startServerInfoMirror();
             } else {
                 removeServerInfoMirror();
+            }
+            if (typeof startLoginButtonTweaks === 'function') {
+                startLoginButtonTweaks(settings);
             }
         } else if (location.href.includes('/exams')) {
             if (typeof startAutoExamRegistration === 'function') {
@@ -113,7 +116,7 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
     if (namespace === 'local') {
         // Grab the freshest settings
         chrome.storage.local.get(NEPTUN_TWEAKS_DEFAULTS, (settings) => {
-            
+
             // Instantly apply dark mode on any page
             if (typeof startDarkMode === 'function') {
                 startDarkMode(settings.featureDarkMode);
@@ -129,13 +132,16 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
                 if (typeof window.updateLiveBackground === 'function') {
                     window.updateLiveBackground(settings.featureBackground, settings.bgType, urlToUse, settings.bgPositionY, settings.bgColor);
                 }
-            } 
+            }
             // Login-specific live updates
             else if (location.href.includes('/login')) {
                 if (settings.featureServerInfo) {
                     startServerInfoMirror();
                 } else {
                     removeServerInfoMirror();
+                }
+                if (typeof updateLoginButtonText === 'function') {
+                    updateLoginButtonText(settings);
                 }
             }
         });
