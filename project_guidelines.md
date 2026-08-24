@@ -34,6 +34,11 @@ neptun_tweaks/                   ← Repo root
     ├── main.js                  ← Orchestrator: reads settings, routes by URL, applies tweaks
     ├── popup.html               ← Extension popup UI (also used as options_ui page)
     ├── popup.js                 ← Popup logic: load/save settings, page switching, UI state
+    ├── icons/                   ← Browser extension icons
+    │   ├── icon16.png           ← 16x16 icon (favicon / small toolbar)
+    │   ├── icon32.png           ← 32x32 icon (retina / standard toolbar)
+    │   ├── icon48.png           ← 48x48 icon (extensions manager)
+    │   └── icon128.png          ← 128x128 icon (store / high-res)
     └── modules/                 ← Feature modules — one file per feature
         ├── defaults.js          ← NEPTUN_TWEAKS_DEFAULTS constant (settings schema + defaults)
         ├── darkMode.js          ← Dark mode toggle (CSS class on <html>)
@@ -42,17 +47,18 @@ neptun_tweaks/                   ← Repo root
         ├── listExpander.js      ← Auto-click "Load More" buttons on lists
         ├── calendarButton.js    ← Inject quick-access calendar button in header
         ├── version.js           ← Inject version badge in header + footer
-        ├── serverInfoMirror.js  ← Mirror server info on login page
+        ├── serverInfoMirror.js  ← Mirror server info + custom login button text
         ├── filterTweaks.js      ← Auto-open filter panel + auto-submit on selection
-        └── examRegistration.js  ← Auto exam registration with priority queue
+        ├── examRegistration.js  ← Auto exam registration with priority queue
+        └── subjectRegistration.js ← Auto subject registration via Órarendtervező
 ```
 
 ### Naming Conventions
-- **Module files:** `camelCase.js` — always a single descriptive noun or compound (e.g., `listExpander.js`, `filterTweaks.js`).
+- **Module files:** `camelCase.js` — always a single descriptive noun or compound (e.g., `listExpander.js`, `filterTweaks.js`, `subjectRegistration.js`).
 - **CSS IDs for injected elements:** Prefixed with `neptun-tweaks-` (e.g., `neptun-tweaks-calendar-btn`, `neptun-tweaks-server-info-mirror`).
 - **CSS classes for injected elements:** Prefixed with `neptun-tweaks-` (e.g., `neptun-tweaks-lang-flex`, `neptun-tweaks-custom-bg`, `neptun-tweaks-dark-mode`).
 - **Data attributes:** `data-image-set` on manipulated host elements to track initialization state.
-- **Setting keys:** `camelCase` prefixed with `feature` for boolean toggles (e.g., `featureDarkMode`, `featureListExpand`).
+- **Setting keys:** `camelCase` prefixed with `feature` for boolean toggles (e.g., `featureDarkMode`, `featureListExpand`, `featureAutoSubject`).
 
 ---
 
@@ -63,17 +69,18 @@ neptun_tweaks/                   ← Repo root
 Scripts are loaded as **content scripts** in the exact order declared in `manifest.json`. There is **no module system** (`import`/`export`). Scripts share the **same global scope** and rely on load order for dependency resolution:
 
 ```
-1. modules/defaults.js        ← Defines NEPTUN_TWEAKS_DEFAULTS (used by everything)
-2. modules/headerImage.js     ← Defines startHeaderImageTweaks(), window.updateLiveBackground
-3. modules/listExpander.js    ← Defines startListExpander()
-4. modules/homePageExpander.js ← Defines expandMenus()
-5. modules/version.js         ← Defines injectVersion(), startFooterVersionTweaks()
-6. modules/calendarButton.js  ← Defines injectCalendarButton()
-7. modules/serverInfoMirror.js ← Defines startServerInfoMirror(), removeServerInfoMirror()
-8. modules/filterTweaks.js    ← Defines startQueryTweaks()
-9. modules/examRegistration.js ← Defines startAutoExamRegistration()
-10. modules/darkMode.js       ← Defines startDarkMode()
-11. main.js                   ← Orchestrator — calls all of the above
+1. modules/defaults.js            ← Defines NEPTUN_TWEAKS_DEFAULTS (used by everything)
+2. modules/headerImage.js         ← Defines startHeaderImageTweaks(), window.updateLiveBackground
+3. modules/listExpander.js        ← Defines startListExpander()
+4. modules/homePageExpander.js     ← Defines expandMenus()
+5. modules/version.js             ← Defines injectVersion(), startFooterVersionTweaks()
+6. modules/calendarButton.js      ← Defines injectCalendarButton()
+7. modules/serverInfoMirror.js     ← Defines startServerInfoMirror(), startLoginButtonTweaks()
+8. modules/filterTweaks.js        ← Defines startQueryTweaks()
+9. modules/examRegistration.js    ← Defines startAutoExamRegistration()
+10. modules/subjectRegistration.js ← Defines startAutoSubjectRegistration()
+11. modules/darkMode.js           ← Defines startDarkMode()
+12. main.js                       ← Orchestrator — calls all of the above
 ```
 
 **Rule:** `main.js` is always loaded **last**. Module files define functions; `main.js` calls them.
@@ -83,9 +90,10 @@ Scripts are loaded as **content scripts** in the exact order declared in `manife
 `main.js` follows a three-part structure:
 
 1. **`determinePageAndRun()`** — Reads settings from `chrome.storage.local.get()` with `NEPTUN_TWEAKS_DEFAULTS` as the defaults object, then conditionally invokes feature functions based on `location.href`:
-   - `/dashboard` → dashboard tweaks (background, expand, calendar, version)
-   - `/login` → server info mirror
+   - `/dashboard` → dashboard tweaks (background, expand, calendar, version) + optional delayed redirect to `/exams` or `/subjects/registration`
+   - `/login` → server info mirror + dynamic login button text (`startLoginButtonTweaks`)
    - `/exams` → auto exam registration
+   - `/subjects/registration` → auto subject registration via Órarendtervező
    - Global (all pages) → dark mode, list expander, footer version, filter tweaks
 
 2. **SPA Navigation Watchdog** — Detects URL changes via:
@@ -160,7 +168,9 @@ const NEPTUN_TWEAKS_DEFAULTS = {
     featureServerInfo: true,
     featureAutoFilter: true,
     featureAutoExam: false,
-    autoExamTargets: []        // Array of "subject||date||type" strings
+    autoExamTargets: [],       // Array of "subject||date||type" strings
+    featureAutoSubjectRedirect: false,
+    featureAutoSubject: false
 };
 ```
 
@@ -186,6 +196,7 @@ Settings changes are propagated in real-time via `chrome.storage.onChanged`. The
 ### 5.2 UI Patterns
 
 - **Toggle switches:** Custom CSS sliders using `<label class="switch"><input type="checkbox"><span class="slider"></span></label>`.
+- **Mutual Exclusivity:** Auto Exam Registration and Auto Subject Registration/Redirect are mutually exclusive; enabling one automatically disables the other in storage and UI.
 - **Feature-dependent controls:** When a parent toggle is off, child controls are `disabled` and their container opacity is set to `0.5`.
 - **Element references:** All interactive elements are grabbed by `document.getElementById()` at the top of the `DOMContentLoaded` handler. No `querySelector` for popup controls.
 - **Settings I/O:** Each control has its own individual `change`/`input` event listener that writes a single key to storage.
