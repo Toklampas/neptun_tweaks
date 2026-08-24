@@ -51,15 +51,22 @@ function startAutoSubjectRegistration(settings) {
                                         console.log('Neptun Tweaks: Clicking Lista nézet option');
                                         option.click();
 
-                                        // Step 4: Wait for accordion panels to appear
+                                        // Step 4: Wait for accordion panels to appear in Órarendtervező
                                         setTimeout(() => {
-                                            console.log("Neptun Tweaks: Waiting for subject list to load...");
+                                            console.log("Neptun Tweaks: Waiting for subject list in Órarendtervező to load...");
                                             waitForElement(
-                                                () => document.querySelector('mat-expansion-panel'),
-                                                'subject accordion panels',
                                                 () => {
-                                                    console.log("Neptun Tweaks: Page setup complete. Starting in 2.5s...");
-                                                    setTimeout(onComplete, 2500);
+                                                    const p = getPlannerPanels();
+                                                    return p.length > 0 ? p[0] : null;
+                                                },
+                                                'subject accordion panels in Órarendtervező',
+                                                () => {
+                                                    // Step 5: Stagger-expand all subject accordions
+                                                    console.log("Neptun Tweaks: Expanding all subject accordions in Órarendtervező...");
+                                                    expandAllPlannerPanels(() => {
+                                                        console.log("Neptun Tweaks: All accordions expanded. Starting loop in 1.5s...");
+                                                        setTimeout(onComplete, 1500);
+                                                    });
                                                 }
                                             );
                                         }, 1500);
@@ -78,6 +85,7 @@ function startAutoSubjectRegistration(settings) {
     // Phase 2: Registration Loop
     // =========================================================
     function startRegistrationLoop() {
+        console.log("Neptun Tweaks: Registration loop started.");
         // Track which subjects we've successfully registered (by header text)
         let registeredSubjects = {};
         // Track cooldowns per subject to avoid hammering
@@ -86,6 +94,7 @@ function startAutoSubjectRegistration(settings) {
         let nextAllowedActionTime = 0;
         // Current state
         let currentIndex = 0;
+        let logTickCount = 0;
 
         const loopInterval = setInterval(() => {
             if (!isAutoRegisterEnabled) return;
@@ -93,29 +102,40 @@ function startAutoSubjectRegistration(settings) {
             const now = Date.now();
             if (now < nextAllowedActionTime) return;
 
-            // If Neptun is processing (spinner visible), wait patiently
-            if (document.querySelector('.spinner, .spinner.table-action, .mat-mdc-progress-spinner')) return;
-
-            // Check for and handle confirmation dialogs
-            if (handleConfirmationDialog()) {
-                nextAllowedActionTime = now + 2000;
+            // If Neptun is processing (visible spinner active), wait patiently
+            if (isSpinnerActive()) {
+                console.log("Neptun Tweaks: Waiting for loading spinner to clear...");
                 return;
             }
 
-            // Get all accordion panels
-            const panels = Array.from(document.querySelectorAll('mat-expansion-panel'));
-            if (panels.length === 0) return;
+            // Check for and handle confirmation dialogs
+            if (handleConfirmationDialog()) {
+                nextAllowedActionTime = now + 800;
+                return;
+            }
+
+            // Get all accordion panels strictly inside Órarendtervező
+            const panels = getPlannerPanels();
+            if (panels.length === 0) {
+                if (logTickCount++ % 5 === 0) {
+                    console.log("Neptun Tweaks: No subject accordion panels found inside Órarendtervező yet.");
+                }
+                return;
+            }
 
             // Filter out Zárthelyi and already-registered subjects
             const eligiblePanels = panels.filter(panel => {
                 const headerText = getAccordionHeaderText(panel);
-                if (headerText.includes('Zárthelyi')) return false;
+                if (!headerText) return false;
+                if (headerText.toLowerCase().includes('zárthelyi')) return false;
                 if (registeredSubjects[headerText]) return false;
                 return true;
             });
 
             if (eligiblePanels.length === 0) {
-                // All done (or all filtered out)
+                if (logTickCount++ % 10 === 0) {
+                    console.log("Neptun Tweaks: No eligible subjects remaining (all registered or skipped).");
+                }
                 return;
             }
 
@@ -127,24 +147,26 @@ function startAutoSubjectRegistration(settings) {
             const panel = eligiblePanels[currentIndex];
             const headerText = getAccordionHeaderText(panel);
 
-            // Cooldown check — at least 6 seconds between attempts on the same subject
-            if (lastClickTime[headerText] && (now - lastClickTime[headerText] < 6000)) {
+            // Cooldown check — at least 2.5 seconds between attempts on the same subject
+            if (lastClickTime[headerText] && (now - lastClickTime[headerText] < 2500)) {
                 // Skip to next subject while this one cools down
                 currentIndex++;
                 return;
             }
 
             // Step 1: Expand the accordion if it's collapsed
-            const header = panel.querySelector('mat-expansion-panel-header');
+            const header = panel.querySelector('mat-expansion-panel-header, .mat-expansion-panel-header');
             if (!header) {
+                console.log('Neptun Tweaks: No header found in panel for "' + headerText + '". Skipping.');
                 currentIndex++;
                 return;
             }
 
-            const isExpanded = header.getAttribute('aria-expanded') === 'true';
+            const isExpanded = isAccordionExpanded(panel, header);
+
             if (!isExpanded) {
                 console.log('Neptun Tweaks: Expanding accordion for "' + headerText + '"');
-                header.click();
+                triggerAccordionExpansion(panel, header);
                 // Pause 1.2 seconds for the panel expansion animation and content to render
                 nextAllowedActionTime = now + 1200;
                 return;
@@ -155,7 +177,7 @@ function startAutoSubjectRegistration(settings) {
 
             if (!registerBtn) {
                 // Button not found — check if content is still loading or subject is already taken
-                const panelContent = panel.querySelector('.mat-expansion-panel-content, mat-expansion-panel-body');
+                const panelContent = panel.querySelector('.mat-expansion-panel-content, mat-expansion-panel-body, .mat-expansion-panel-body');
                 if (panelContent) {
                     if (!panel._neptunTweaksWaitCount) panel._neptunTweaksWaitCount = 0;
                     panel._neptunTweaksWaitCount++;
@@ -168,6 +190,8 @@ function startAutoSubjectRegistration(settings) {
                         currentIndex++;
                         nextAllowedActionTime = now + 1000;
                     }
+                } else {
+                    console.log('Neptun Tweaks: Waiting for panel content to render for "' + headerText + '"');
                 }
                 return;
             }
@@ -176,7 +200,7 @@ function startAutoSubjectRegistration(settings) {
             if (registerBtn.disabled) {
                 console.log('Neptun Tweaks: Register button disabled for "' + headerText + '". Skipping.');
                 currentIndex++;
-                nextAllowedActionTime = now + 1000;
+                nextAllowedActionTime = now + 300;
                 return;
             }
 
@@ -184,11 +208,11 @@ function startAutoSubjectRegistration(settings) {
             registerBtn.click();
             lastClickTime[headerText] = Date.now();
 
-            // Give 2.5 seconds between clicking subjects to let network requests resolve naturally
-            nextAllowedActionTime = now + 2500;
+            // Snappy 500ms delay before advancing to the next subject
+            nextAllowedActionTime = now + 500;
             currentIndex++;
 
-        }, 1000);
+        }, 300);
     }
 
     // =========================================================
@@ -196,46 +220,165 @@ function startAutoSubjectRegistration(settings) {
     // =========================================================
 
     /**
+     * Checks if a loading spinner is currently visible on the page.
+     */
+    function isSpinnerActive() {
+        const spinners = document.querySelectorAll('.spinner.table-action, .mat-mdc-progress-spinner, .spinner');
+        for (const s of spinners) {
+            if (s.offsetParent !== null && window.getComputedStyle(s).display !== 'none' && window.getComputedStyle(s).visibility !== 'hidden') {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Gets all accordion panels located strictly inside the Órarendtervező (timetable planner) container.
+     */
+    function getPlannerPanels() {
+        // Query timetable planner modal/overlay/container specifically
+        const plannerContainers = document.querySelectorAll('neptun-timetable-planner, .timetable-planner__container, .timetable-planner__content, [class*="timetable-planner"]');
+        for (const container of plannerContainers) {
+            const panels = Array.from(container.querySelectorAll('mat-expansion-panel, .mat-expansion-panel'));
+            if (panels.length > 0) return panels;
+        }
+
+        // Fallback: look for panels inside subject-list containers within the planner
+        const subjectLists = document.querySelectorAll('.timetable-planner__container mat-expansion-panel, neptun-timetable-planner mat-expansion-panel');
+        if (subjectLists.length > 0) return Array.from(subjectLists);
+
+        return [];
+    }
+
+    /**
+     * Expands all subject accordion panels inside Órarendtervező with a 150ms staggered delay (skipping Zárthelyi).
+     */
+    function expandAllPlannerPanels(onDone) {
+        const panels = getPlannerPanels();
+        const eligiblePanels = panels.filter(panel => {
+            const headerText = getAccordionHeaderText(panel);
+            return !headerText.toLowerCase().includes('zárthelyi');
+        });
+
+        console.log('Neptun Tweaks: Found ' + eligiblePanels.length + ' subject accordions to expand.');
+
+        let index = 0;
+        function expandNext() {
+            if (index >= eligiblePanels.length) {
+                console.log('Neptun Tweaks: Finished expanding all subject accordions.');
+                if (typeof onDone === 'function') onDone();
+                return;
+            }
+
+            const panel = eligiblePanels[index++];
+            const header = panel.querySelector('mat-expansion-panel-header, .mat-expansion-panel-header');
+            if (header && !isAccordionExpanded(panel, header)) {
+                const headerText = getAccordionHeaderText(panel);
+                console.log('Neptun Tweaks: Expanding accordion [' + index + '/' + eligiblePanels.length + '] "' + headerText + '"');
+                triggerAccordionExpansion(panel, header);
+            }
+
+            setTimeout(expandNext, 400);
+        }
+
+        expandNext();
+    }
+
+    /**
+     * Checks if an accordion panel is currently expanded.
+     */
+    function isAccordionExpanded(panel, header) {
+        if (panel.classList.contains('mat-expanded')) return true;
+        if (panel.classList.contains('mat-expansion-panel-spacing')) return true;
+        if (header && (header.getAttribute('aria-expanded') === 'true' || header.classList.contains('mat-expanded'))) return true;
+
+        const content = panel.querySelector('.mat-expansion-panel-content, mat-expansion-panel-body, .mat-expansion-panel-body');
+        if (content) {
+            if (content.offsetHeight > 20 || content.clientHeight > 20) return true;
+            if (content.getAttribute('aria-hidden') === 'false') return true;
+        }
+        return false;
+    }
+
+    /**
+     * Triggers accordion expansion with a single click.
+     */
+    function triggerAccordionExpansion(panel, header) {
+        // Find the most specific trigger element (title or header) and click it ONCE
+        const title = header.querySelector('mat-panel-title, .mat-expansion-panel-header-title') || header;
+        title.click();
+    }
+
+    /**
+     * Handles "Megerősítés" and "Rendben" dialogs/notices that may appear.
+     * Returns true if a dialog was found and handled (caller should wait).
+     */
+    function handleConfirmationDialog() {
+        // 1. Check for confirmation dialogs
+        const dialog = document.querySelector('mat-dialog-container, .mat-mdc-dialog-container, .cdk-overlay-pane mat-dialog-container, neptun-registration-confirmation-dialog');
+        if (dialog) {
+            // Check "Ne jelenjen meg többször" checkbox if present and not yet checked
+            const checkboxInput = dialog.querySelector('input[type="checkbox"], .mdc-checkbox__native-control');
+            const matCheckbox = dialog.querySelector('mat-checkbox');
+            const label = dialog.querySelector('mat-checkbox label, label[for*="checkbox"], .mdc-form-field label');
+
+            if (checkboxInput && !checkboxInput.checked) {
+                console.log('Neptun Tweaks: Checking "Ne jelenjen meg többször" in confirmation dialog...');
+                if (label) {
+                    label.click();
+                } else if (matCheckbox) {
+                    matCheckbox.click();
+                } else {
+                    checkboxInput.click();
+                }
+            }
+
+            const buttons = dialog.querySelectorAll('button');
+            for (const btn of buttons) {
+                const text = btn.textContent.trim().toLowerCase();
+                if (text.includes('megerősítés') || text.includes('megerosites') || text.includes('rendben')) {
+                    console.log('Neptun Tweaks: Dialog detected. Clicking "' + text + '"...');
+                    btn.click();
+                    return true;
+                }
+            }
+        }
+
+        // 2. Check for notice alerts / snackbars with "Rendben" button
+        const rendbenBtns = document.querySelectorAll('button');
+        for (const btn of rendbenBtns) {
+            if (btn.textContent.trim().toLowerCase() === 'rendben' && btn.offsetParent !== null) {
+                console.log('Neptun Tweaks: Dismissing notice banner ("Rendben")...');
+                btn.click();
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Gets the subject name from an accordion panel header.
      */
     function getAccordionHeaderText(panel) {
-        const header = panel.querySelector('mat-expansion-panel-header');
+        const header = panel.querySelector('mat-expansion-panel-header, .mat-expansion-panel-header');
         if (!header) return '';
-        return header.textContent.trim().replace(/\s+/g, ' ');
+        const titleEl = header.querySelector('mat-panel-title, .mat-expansion-panel-header-title, [class*="panel-title"]') || header;
+        return titleEl.textContent.trim().replace(/\s+/g, ' ');
     }
 
     /**
      * Finds the "Tárgy felvétele" button inside an expanded accordion panel.
      */
     function findRegisterButton(panel) {
-        const buttons = panel.querySelectorAll('button');
+        const buttons = panel.querySelectorAll('button, .neptun-button, a[role="tab"], .mat-mdc-button, .mat-mdc-raised-button');
         for (const btn of buttons) {
-            const text = btn.textContent.trim();
-            if (text.includes('Tárgy felvétele')) {
+            const text = btn.textContent.trim().toLowerCase();
+            if (text.includes('tárgy felvétele') || text.includes('targy felvetele')) {
                 return btn;
             }
         }
         return null;
-    }
-
-    /**
-     * Handles "Megerősítés" confirmation dialogs that may appear after clicking register.
-     * Returns true if a dialog was found and handled (caller should wait).
-     */
-    function handleConfirmationDialog() {
-        const dialog = document.querySelector('mat-dialog-container, .mat-mdc-dialog-container, .cdk-overlay-pane mat-dialog-container');
-        if (!dialog) return false;
-
-        const buttons = dialog.querySelectorAll('button');
-        for (const btn of buttons) {
-            const text = btn.textContent.trim();
-            if (text.includes('Megerősítés') || text.includes('megerősítés')) {
-                console.log('Neptun Tweaks: Confirmation dialog detected. Clicking "Megerősítés"...');
-                btn.click();
-                return true;
-            }
-        }
-        return false;
     }
 
     /**
