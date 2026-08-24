@@ -82,7 +82,7 @@ function determinePageAndRun() {
                 startAutoExamRegistration(settings);
             }
         } else if (location.href.includes('/subjects/registration')) {
-            if (typeof startAutoSubjectRegistration === 'function') {
+            if (settings.featureAutoSubject && typeof startAutoSubjectRegistration === 'function') {
                 startAutoSubjectRegistration(settings);
             }
         }
@@ -142,6 +142,12 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
                 }
                 if (typeof updateLoginButtonText === 'function') {
                     updateLoginButtonText(settings);
+                }
+            }
+            // Subject registration live updates
+            else if (location.href.includes('/subjects/registration')) {
+                if (settings.featureAutoSubject && typeof startAutoSubjectRegistration === 'function') {
+                    startAutoSubjectRegistration(settings);
                 }
             }
         });

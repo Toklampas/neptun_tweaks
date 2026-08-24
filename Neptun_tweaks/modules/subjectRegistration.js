@@ -1,25 +1,40 @@
 // modules/subjectRegistration.js
 
+let subjectRegistrationInterval = null;
+
 function startAutoSubjectRegistration(settings) {
-    let isAutoRegisterEnabled = settings.featureAutoSubject;
+    let isAutoRegisterEnabled = !!settings.featureAutoSubject;
+
+    if (!isAutoRegisterEnabled) {
+        if (subjectRegistrationInterval) {
+            clearInterval(subjectRegistrationInterval);
+            subjectRegistrationInterval = null;
+        }
+        return;
+    }
+
+    // Only run on the Subject Registration page
+    if (!window.location.href.toLowerCase().includes('subjects/registration')) return;
 
     // Listen for live updates from the popup
     chrome.storage.onChanged.addListener((changes, namespace) => {
         if (namespace === 'local') {
             if (changes.featureAutoSubject !== undefined) {
-                isAutoRegisterEnabled = changes.featureAutoSubject.newValue;
+                isAutoRegisterEnabled = !!changes.featureAutoSubject.newValue;
                 console.log("Neptun Tweaks: Auto Subject Registration is now " + (isAutoRegisterEnabled ? "ON" : "OFF"));
+                if (!isAutoRegisterEnabled && subjectRegistrationInterval) {
+                    clearInterval(subjectRegistrationInterval);
+                    subjectRegistrationInterval = null;
+                }
             }
         }
     });
 
-    console.log("Neptun Tweaks: Auto Subject Registration module started. Currently: " + (isAutoRegisterEnabled ? "ON" : "OFF"));
-
-    // Only run on the Subject Registration page
-    if (!window.location.href.toLowerCase().includes('subjects/registration')) return;
+    console.log("Neptun Tweaks: Auto Subject Registration module started. Currently: ON");
 
     // --- Phase 1: Navigate to Órarendtervező → Lista nézet ---
     setupPageView(function onReady() {
+        if (!isAutoRegisterEnabled) return;
         // --- Phase 2: Sequential Registration Loop ---
         startRegistrationLoop();
     });
@@ -28,63 +43,116 @@ function startAutoSubjectRegistration(settings) {
     // Phase 1: Page Setup — click tabs and select the right view
     // =========================================================
     function setupPageView(onComplete) {
-        // Give the page 2 seconds to fully render before interacting
-        setTimeout(() => {
-            // Step 1: Click the "Órarendtervező" tab
-            waitAndClick(
-                () => findButtonByText('Órarendtervező'),
-                'Órarendtervező tab',
-                () => {
-                    // Step 2: Open the view-mode dropdown
-                    waitForElement(
-                        () => findDropdownTrigger(),
-                        'view-mode dropdown',
-                        (dropdown) => {
-                            openDropdown(dropdown);
+        if (!isAutoRegisterEnabled) return;
 
-                            // Step 3: Select "Lista nézet" from the dropdown options (0.5s pause after opening)
-                            setTimeout(() => {
-                                waitForElement(
-                                    () => findOptionByText('Lista'),
-                                    'Lista nézet option',
-                                    (option) => {
-                                        console.log('Neptun Tweaks: Clicking Lista nézet option');
-                                        option.click();
+        // Check if Órarendtervező tab/container is already open
+        function isPlannerOpen() {
+            const planner = document.querySelector('neptun-timetable-planner, .timetable-planner__container, .timetable-planner__content, [class*="timetable-planner"]');
+            if (planner && planner.offsetParent !== null) return true;
 
-                                        // Step 4: Wait for accordion panels to appear in Órarendtervező
-                                        setTimeout(() => {
-                                            console.log("Neptun Tweaks: Waiting for subject list in Órarendtervező to load...");
-                                            waitForElement(
-                                                () => {
-                                                    const p = getPlannerPanels();
-                                                    return p.length > 0 ? p[0] : null;
-                                                },
-                                                'subject accordion panels in Órarendtervező',
-                                                () => {
-                                                    // Step 5: Stagger-expand all subject accordions
-                                                    console.log("Neptun Tweaks: Expanding all subject accordions in Órarendtervező...");
-                                                    expandAllPlannerPanels(() => {
-                                                        console.log("Neptun Tweaks: All accordions expanded. Starting loop in 1.5s...");
-                                                        setTimeout(onComplete, 1500);
-                                                    });
-                                                }
-                                            );
-                                        }, 1500);
-                                    }
-                                );
-                            }, 500);
-                        }
-                    );
-                },
-                1000
+            const tab = findButtonByText('Órarendtervező');
+            if (tab && (tab.getAttribute('aria-selected') === 'true' || tab.classList.contains('active') || tab.classList.contains('mat-mdc-tab-active') || tab.classList.contains('selected'))) {
+                return true;
+            }
+            return false;
+        }
+
+        // Check if "Lista nézet" is already active
+        function isListaViewActive() {
+            const dropdown = findDropdownTrigger();
+            if (dropdown && dropdown.textContent.includes('Lista')) return true;
+            return false;
+        }
+
+        function ensureListaView(afterViewReady) {
+            if (!isAutoRegisterEnabled) return;
+
+            if (isListaViewActive()) {
+                console.log("Neptun Tweaks: Lista nézet is already active.");
+                waitForSubjectsAndExpand(afterViewReady);
+                return;
+            }
+
+            console.log("Neptun Tweaks: Switching view mode to Lista nézet...");
+            waitForElement(
+                () => findDropdownTrigger(),
+                'view-mode dropdown',
+                (dropdown) => {
+                    if (!isAutoRegisterEnabled) return;
+                    openDropdown(dropdown);
+
+                    setTimeout(() => {
+                        if (!isAutoRegisterEnabled) return;
+
+                        waitForElement(
+                            () => findOptionByText('Lista'),
+                            'Lista nézet option',
+                            (option) => {
+                                if (!isAutoRegisterEnabled) return;
+                                console.log('Neptun Tweaks: Clicking Lista nézet option');
+                                option.click();
+
+                                setTimeout(() => {
+                                    waitForSubjectsAndExpand(afterViewReady);
+                                }, 1500);
+                            }
+                        );
+                    }, 500);
+                }
             );
-        }, 2000);
+        }
+
+        function waitForSubjectsAndExpand(afterDone) {
+            if (!isAutoRegisterEnabled) return;
+
+            console.log("Neptun Tweaks: Waiting for subject list in Órarendtervező to load...");
+            waitForElement(
+                () => {
+                    const p = getPlannerPanels();
+                    return p.length > 0 ? p[0] : null;
+                },
+                'subject accordion panels in Órarendtervező',
+                () => {
+                    if (!isAutoRegisterEnabled) return;
+
+                    console.log("Neptun Tweaks: Expanding all subject accordions in Órarendtervező...");
+                    expandAllPlannerPanels(() => {
+                        if (!isAutoRegisterEnabled) return;
+                        console.log("Neptun Tweaks: All accordions expanded. Starting loop in 1.5s...");
+                        setTimeout(afterDone, 1500);
+                    });
+                }
+            );
+        }
+
+        // --- Main setup flow ---
+        if (isPlannerOpen()) {
+            console.log("Neptun Tweaks: Órarendtervező tab is already open.");
+            ensureListaView(onComplete);
+        } else {
+            console.log("Neptun Tweaks: Opening Órarendtervező tab in 2.0s...");
+            setTimeout(() => {
+                if (!isAutoRegisterEnabled) return;
+
+                waitAndClick(
+                    () => findButtonByText('Órarendtervező'),
+                    'Órarendtervező tab',
+                    () => {
+                        if (!isAutoRegisterEnabled) return;
+                        setTimeout(() => {
+                            ensureListaView(onComplete);
+                        }, 1000);
+                    }
+                );
+            }, 2000);
+        }
     }
 
     // =========================================================
     // Phase 2: Registration Loop
     // =========================================================
     function startRegistrationLoop() {
+        if (!isAutoRegisterEnabled) return;
         console.log("Neptun Tweaks: Registration loop started.");
         // Track which subjects we've successfully registered (by header text)
         let registeredSubjects = {};
@@ -96,8 +164,14 @@ function startAutoSubjectRegistration(settings) {
         let currentIndex = 0;
         let logTickCount = 0;
 
-        const loopInterval = setInterval(() => {
-            if (!isAutoRegisterEnabled) return;
+        if (subjectRegistrationInterval) clearInterval(subjectRegistrationInterval);
+
+        subjectRegistrationInterval = setInterval(() => {
+            if (!isAutoRegisterEnabled) {
+                clearInterval(subjectRegistrationInterval);
+                subjectRegistrationInterval = null;
+                return;
+            }
 
             const now = Date.now();
             if (now < nextAllowedActionTime) return;
