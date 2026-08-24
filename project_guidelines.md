@@ -90,7 +90,7 @@ Scripts are loaded as **content scripts** in the exact order declared in `manife
 `main.js` follows a three-part structure:
 
 1. **`determinePageAndRun()`** — Reads settings from `chrome.storage.local.get()` with `NEPTUN_TWEAKS_DEFAULTS` as the defaults object, then conditionally invokes feature functions based on `location.href`:
-   - `/dashboard` → dashboard tweaks (background, expand, calendar, version) + optional delayed redirect to `/exams` or `/subjects/registration`
+   - `/dashboard` → dashboard tweaks (background, expand, calendar) + optional delayed redirect to `/exams` or `/subjects/registration`
    - `/login` → server info mirror + dynamic login button text (`startLoginButtonTweaks`)
    - `/exams` → auto exam registration
    - `/subjects/registration` → auto subject registration via Órarendtervező
@@ -216,7 +216,7 @@ Settings changes are propagated in real-time via `chrome.storage.onChanged`. The
 ### 6.1 Principles
 
 - **One file for all injected styles.** Every element created by content scripts is styled here.
-- **Scoped via unique IDs** — `#neptun-tweaks-calendar-btn`, `#neptun-ext-version`, etc.
+- **Scoped via unique IDs** — `#neptun-tweaks-calendar-btn`, `#neptun-tweaks-footer-v`, etc.
 - **Body class toggles** — Features that affect broad layout use body/html classes:
   - `body.neptun-tweaks-custom-bg` — active when custom background is set
   - `html.neptun-tweaks-dark-mode` — active when dark mode is on

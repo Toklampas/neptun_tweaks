@@ -246,16 +246,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderAutoExamTargets(targets) {
         if (!targets || targets.length === 0) {
-            autoExamTargetsList.innerHTML = '<li style="color: #777; text-align: center;">No exams selected.</li>';
+            autoExamTargetsList.innerHTML = '<li style="color: #777; text-align: center;">Nincs kiválasztott vizsga.</li>';
             clearExamTargetsBtn.style.display = 'none';
-            viewTargetsBtn.textContent = 'View Selected Exams (0)';
+            viewTargetsBtn.textContent = 'Kiválasztott vizsgák (0)';
         } else {
             clearExamTargetsBtn.style.display = 'block';
-            viewTargetsBtn.textContent = `View Selected Exams (${targets.length})`;
+            viewTargetsBtn.textContent = `Kiválasztott vizsgák (${targets.length})`;
             autoExamTargetsList.innerHTML = '';
             targets.forEach((target, index) => {
                 const parts = target.split('||');
-                const subject = parts[0] || 'Unknown';
+                const subject = parts[0] || 'Ismeretlen tárgy';
                 const date = parts[1] || '';
                 const type = parts[2] ? ` (${parts[2]})` : '';
                 
@@ -315,7 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     clearExamTargetsBtn.addEventListener('click', () => {
-        if (confirm("Are you sure you want to clear all saved exams for auto registration?\n\nThis cannot be undone.")) {
+        if (confirm("Biztosan törölni szeretnéd az összes elmentett célvizsgát?\n\nEz a művelet nem vonható vissza.")) {
             chrome.storage.local.set({ autoExamTargets: [] });
             renderAutoExamTargets([]);
         }

@@ -8,22 +8,27 @@
   <link rel="icon" type="image/png" sizes="16x16" href="icons/icon16.png">
   <link rel="apple-touch-icon" sizes="128x128" href="icons/icon128.png">
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      width: 280px;
-      /* Widened slightly to fit the new buttons */
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      padding: 15px;
-      background-color: #f9f9f9;
-      color: #333;
+      width: 300px;
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Tahoma, Geneva, Verdana, sans-serif;
+      padding: 14px;
+      background-color: #f4f6f9;
+      color: #1e293b;
       margin: 0;
     }
 
     h3 {
       position: relative;
       margin-top: 0;
-      margin-bottom: 15px;
-      font-size: 16px;
+      margin-bottom: 12px;
+      font-size: 15px;
+      font-weight: 700;
       text-align: center;
+      color: #0f172a;
       border-bottom: 2px solid #0056b3;
       padding-bottom: 8px;
       line-height: 20px;
@@ -33,7 +38,7 @@
       position: absolute;
       right: 0;
       top: 0;
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 600;
       color: #0056b3;
       background: rgba(0, 86, 179, 0.08);
@@ -41,7 +46,7 @@
       border-radius: 4px;
       padding: 1px 6px;
       text-decoration: none;
-      transition: 0.2s;
+      transition: 0.15s ease;
       line-height: normal;
     }
 
@@ -50,28 +55,63 @@
       border-color: #0056b3;
     }
 
+    /* --- Section Cards --- */
+    .section-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+    }
+
+    .section-header {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #64748b;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
     .toggle-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
-      font-size: 13px;
+      min-height: 24px;
+      font-size: 12.5px;
       font-weight: 500;
+      color: #334155;
     }
 
-    .toggle-row > label[title] {
+    .toggle-row.sub-row {
+      padding-left: 10px;
+      font-size: 11.5px;
+      color: #64748b;
+    }
+
+    .toggle-row>label[title] {
       cursor: help;
+    }
+
+    .row-divider {
+      border-top: 1px solid #f1f5f9;
+      margin: 7px 0;
     }
 
     .url-input {
       width: 100%;
-      box-sizing: border-box;
-      padding: 8px;
+      padding: 7px 9px;
       font-size: 11px;
       margin-bottom: 8px;
-      border: 1px solid #ccc;
+      border: 1px solid #cbd5e1;
       border-radius: 6px;
-      transition: 0.3s;
+      transition: 0.2s;
+      background: #fff;
+      color: #333;
     }
 
     .url-input:focus {
@@ -80,9 +120,56 @@
     }
 
     .url-input:disabled {
-      background-color: #e9e9e9;
-      color: #999;
-      border-color: #ddd;
+      background-color: #f1f5f9;
+      color: #94a3b8;
+      border-color: #e2e8f0;
+    }
+
+    .compact-select {
+      width: 68px;
+      padding: 3px 5px;
+      font-size: 11px;
+      text-align: center;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      background: #fff;
+      color: #333;
+      cursor: pointer;
+    }
+
+    /* --- Buttons --- */
+    .shift-btn {
+      background-color: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 6px 10px;
+      color: #334155;
+      font-size: 11.5px;
+      font-weight: 500;
+      transition: 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-align: center;
+    }
+
+    .shift-btn:hover:not(:disabled) {
+      background-color: #e2e8f0;
+      border-color: #94a3b8;
+      color: #0f172a;
+    }
+
+    .shift-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      border-color: #e2e8f0;
+    }
+
+    .sub-action-btn {
+      width: 100%;
+      margin-top: 6px;
     }
 
     /* --- Shift Buttons CSS --- */
@@ -103,7 +190,7 @@
       gap: 3px;
     }
 
-    .shift-btn {
+    .shift-btn-sm {
       background-color: #fff;
       border: 1px solid #ccc;
       border-radius: 4px;
@@ -114,12 +201,12 @@
       font-size: 11px;
     }
 
-    .shift-btn:hover:not(:disabled) {
+    .shift-btn-sm:hover:not(:disabled) {
       background-color: #e9ecef;
       border-color: #0056b3;
     }
 
-    .shift-btn:disabled {
+    .shift-btn-sm:disabled {
       opacity: 0.5;
       cursor: not-allowed;
       border-color: #ccc;
@@ -133,25 +220,38 @@
     }
 
     .note {
-      font-size: 11px;
-      color: #777;
+      font-size: 10.5px;
+      color: #64748b;
       text-align: center;
-      margin-top: 15px;
+      margin-top: 8px;
+      margin-bottom: 6px;
       font-style: italic;
     }
 
-    hr.separator {
-      border: 0;
-      border-top: 1px solid #ddd;
-      margin: 15px 0;
+    .footer-link-wrap {
+      text-align: center;
+      margin-top: 4px;
+    }
+
+    .full-tab-link {
+      color: #0056b3;
+      font-size: 11.5px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: 0.15s ease;
+    }
+
+    .full-tab-link:hover {
+      text-decoration: underline;
     }
 
     /* --- Toggle Switch CSS --- */
     .switch {
       position: relative;
       display: inline-block;
-      width: 36px;
-      height: 20px;
+      width: 34px;
+      height: 19px;
+      flex-shrink: 0;
     }
 
     .switch input {
@@ -167,22 +267,22 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background-color: #ccc;
-      transition: .3s;
+      background-color: #cbd5e1;
+      transition: .25s cubic-bezier(0.4, 0, 0.2, 1);
       border-radius: 34px;
     }
 
     .slider:before {
       position: absolute;
       content: "";
-      height: 14px;
-      width: 14px;
+      height: 13px;
+      width: 13px;
       left: 3px;
       bottom: 3px;
       background-color: white;
-      transition: .3s;
+      transition: .25s cubic-bezier(0.4, 0, 0.2, 1);
       border-radius: 50%;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     }
 
     input:checked+.slider {
@@ -190,58 +290,108 @@
     }
 
     input:checked+.slider:before {
-      transform: translateX(16px);
+      transform: translateX(15px);
     }
 
     /* --- Dark Mode CSS --- */
     body.dark-mode {
-      background-color: #222;
-      color: #eee;
+      background-color: #1a1a1a;
+      color: #e2e8f0;
     }
 
     body.dark-mode h3 {
+      color: #f8fafc;
       border-bottom-color: #4ea8ff;
     }
 
+    body.dark-mode .section-card {
+      background: #262626;
+      border-color: #383838;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    body.dark-mode .section-header {
+      color: #94a3b8;
+    }
+
+    body.dark-mode .toggle-row {
+      color: #e2e8f0;
+    }
+
+    body.dark-mode .toggle-row.sub-row {
+      color: #a1a1aa;
+    }
+
+    body.dark-mode .row-divider {
+      border-top-color: #333333;
+    }
+
     body.dark-mode .url-input {
-      background-color: #333;
+      background-color: #1e1e1e;
       color: #eee;
-      border-color: #555;
-    }
-
-    body.dark-mode .url-input:disabled {
-      background-color: #444;
-      color: #aaa;
-      border-color: #666;
-    }
-
-    body.dark-mode .shift-controls {
-      background: #333;
-      color: #eee;
-    }
-
-    body.dark-mode .shift-btn {
-      background-color: #222;
-      border-color: #555;
-      color: #eee;
-    }
-
-    body.dark-mode .shift-btn:hover:not(:disabled) {
-      background-color: #444;
-      border-color: #4ea8ff;
-    }
-
-    body.dark-mode .shift-btn:disabled {
       border-color: #444;
     }
 
-    body.dark-mode hr.separator {
-      border-top-color: #444;
+    body.dark-mode .url-input:disabled {
+      background-color: #2a2a2a;
+      color: #71717a;
+      border-color: #383838;
+    }
+
+    body.dark-mode .compact-select {
+      background-color: #1e1e1e;
+      color: #eee;
+      border-color: #444;
+    }
+
+    body.dark-mode .shift-btn {
+      background-color: #2a2a2a;
+      border-color: #444;
+      color: #e2e8f0;
+    }
+
+    body.dark-mode .shift-btn:hover:not(:disabled) {
+      background-color: #383838;
+      border-color: #4ea8ff;
+      color: #ffffff;
+    }
+
+    body.dark-mode .shift-btn:disabled {
+      border-color: #333;
+      color: #71717a;
+    }
+
+    body.dark-mode .shift-controls {
+      background: #2a2a2a;
+      color: #eee;
+    }
+
+    body.dark-mode .shift-btn-sm {
+      background-color: #1e1e1e;
+      border-color: #444;
+      color: #eee;
+    }
+
+    body.dark-mode .shift-btn-sm:hover:not(:disabled) {
+      background-color: #383838;
+      border-color: #4ea8ff;
+    }
+
+    body.dark-mode .shift-btn-sm:disabled {
+      border-color: #333;
+    }
+
+    body.dark-mode .note {
+      color: #94a3b8;
+    }
+
+    body.dark-mode .full-tab-link {
+      color: #4ea8ff !important;
     }
 
     body.dark-mode #autoExamTargetsContainer {
-      background: #333 !important;
-      border-color: #555 !important;
+      background: #1e1e1e !important;
+      border-color: #444 !important;
     }
 
     body.dark-mode #autoExamTargetsList {
@@ -249,11 +399,7 @@
     }
 
     body.dark-mode #autoExamTargetsList li {
-      border-bottom-color: #444 !important;
-    }
-
-    body.dark-mode a#openOptionsPage {
-      color: #4ea8ff !important;
+      border-bottom-color: #333 !important;
     }
 
     body.dark-mode .version-badge {
@@ -273,173 +419,210 @@
   <div id="mainPage">
     <h3>
       <span>Neptun Tweaks</span>
-      <a href="https://github.com/Toklampas/neptun_tweaks" target="_blank" id="popupVersion" class="version-badge" title="Neptun Tweaks GitHub Repository"></a>
+      <a href="https://github.com/Toklampas/neptun_tweaks" target="_blank" id="popupVersion" class="version-badge"
+        title="Neptun Tweaks GitHub oldal"></a>
     </h3>
 
-  <div class="toggle-row">
-    <label for="darkModeToggle" title="Enable dark mode for the entire Neptun site.">Dark Mode</label>
-    <label class="switch">
-      <input type="checkbox" id="darkModeToggle">
-      <span class="slider"></span>
-    </label>
-  </div>
+    <!-- 1. Tárgy- és Vizsgafelvétel -->
+    <div class="section-card">
+      <div class="section-header">Automatizálások</div>
 
-  <hr class="separator">
+      <div class="toggle-row">
+        <label for="autoExamToggle"
+          title="Automatikusan megnyomja a 'Felvétel' gombot a kiválasztott vizsgáknál. A vizsgákat a vizsgafelvételi oldalon lehet megjelölni.">Automatikus
+          vizsgafelvétel</label>
+        <label class="switch">
+          <input type="checkbox" id="autoExamToggle">
+          <span class="slider"></span>
+        </label>
+      </div>
 
-  <div class="toggle-row">
-    <label for="bgToggle" title="Replace the default dashboard header with a custom background image or solid color.">Custom Dashboard Background</label>
-    <label class="switch">
-      <input type="checkbox" id="bgToggle">
-      <span class="slider"></span>
-    </label>
-  </div>
+      <button id="viewTargetsBtn" class="shift-btn sub-action-btn" style="margin-bottom: 8px;">Kiválasztott vizsgák
+        (0)</button>
 
-  <button id="viewBgSettingsBtn" class="shift-btn" style="width: 100%; margin-bottom: 15px; padding: 6px;">Customize Background</button>
+      <div class="row-divider"></div>
 
-  <hr class="separator">
+      <div class="toggle-row">
+        <label for="autoSubjectToggle"
+          title="Automatikusan megnyomja a 'Tárgy felvétele' gombot minden tárgynál az Órarendtervezőben. A zárthelyiket kihagyja.">Automatikus
+          tárgyfelvétel</label>
+        <label class="switch">
+          <input type="checkbox" id="autoSubjectToggle">
+          <span class="slider"></span>
+        </label>
+      </div>
 
-  <div class="toggle-row">
-    <label for="homeToggle" title="Automatically expand all collapsed sections on the dashboard homepage.">Auto-Expand Dashboard</label>
-    <label class="switch">
-      <input type="checkbox" id="homeToggle">
-      <span class="slider"></span>
-    </label>
-  </div>
+      <div class="row-divider"></div>
 
-  <hr class="separator">
+      <div class="toggle-row sub-row">
+        <label for="autoSubjectRedirectToggle" title="Belépés után automatikusan átirányít a Tárgyfelvétel oldalra.">↳
+          Átirányítás tárgyfelvételre</label>
+        <label class="switch">
+          <input type="checkbox" id="autoSubjectRedirectToggle">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
 
-  <div class="toggle-row">
-    <label for="calendarToggle" title="Add a quick-access Calendar button to the header bar next to the Menu.">Quick Calendar Button</label>
-    <label class="switch">
-      <input type="checkbox" id="calendarToggle">
-      <span class="slider"></span>
-    </label>
-  </div>
+    <!-- 2. Megjelenés -->
+    <div class="section-card">
+      <div class="section-header">Megjelenés</div>
 
-  <hr class="separator">
+      <div class="toggle-row">
+        <label for="darkModeToggle" title="Sötét mód bekapcsolása a teljes Neptun felületén.">Sötét mód</label>
+        <label class="switch">
+          <input type="checkbox" id="darkModeToggle">
+          <span class="slider"></span>
+        </label>
+      </div>
 
-  <div class="toggle-row">
-    <label for="listToggle" title="Automatically click 'Load More' on lists to show all items up to the configured limit.">Auto-Expand Lists</label>
-    <label class="switch">
-      <input type="checkbox" id="listToggle">
-      <span class="slider"></span>
-    </label>
-  </div>
+      <div class="row-divider"></div>
 
-  <div class="toggle-row" id="listLimitRow">
-    <label for="listExpandLimit" title="Maximum number of list items to auto-load before stopping.">Max List Elements</label>
-    <select id="listExpandLimit" class="url-input"
-      style="width: 70px; text-align: center; margin-bottom: 0; padding: 4px;">
-      <option value="50">50</option>
-      <option value="100">100</option>
-      <option value="250">250</option>
-      <option value="500">500</option>
-    </select>
-  </div>
+      <div class="toggle-row">
+        <label for="bgToggle" title="A vezérlőpult fejlécének lecserélése egyedi képre vagy színre.">Egyedi fejléc
+          háttér</label>
+        <label class="switch">
+          <input type="checkbox" id="bgToggle">
+          <span class="slider"></span>
+        </label>
+      </div>
 
-  <hr class="separator">
+      <button id="viewBgSettingsBtn" class="shift-btn sub-action-btn">Háttér testreszabása</button>
+    </div>
 
-  <div class="toggle-row">
-    <label for="serverInfoToggle" title="Display the server name and available spaces next to the language selector on the login page.">Show Server Info on Login</label>
-    <label class="switch">
-      <input type="checkbox" id="serverInfoToggle">
-      <span class="slider"></span>
-    </label>
-  </div>
+    <!-- 3. Navigáció & Egyéb funkciók -->
+    <div class="section-card">
+      <div class="section-header">Navigáció & Egyéb funkciók</div>
 
-  <hr class="separator">
+      <div class="toggle-row">
+        <label for="calendarToggle" title="Gyorselérésű Naptár gomb hozzáadása a fejléc sávhoz a Menü mellé.">Gyors
+          Naptár
+          gomb</label>
+        <label class="switch">
+          <input type="checkbox" id="calendarToggle">
+          <span class="slider"></span>
+        </label>
+      </div>
 
-  <div class="toggle-row">
-    <label for="autoFilterToggle" title="Auto-open the filter panel and auto-submit after selecting a query from the dropdown.">Queries Tweaks</label>
-    <label class="switch">
-      <input type="checkbox" id="autoFilterToggle">
-      <span class="slider"></span>
-    </label>
-  </div>
+      <div class="row-divider"></div>
 
-  <hr class="separator">
+      <div class="toggle-row">
+        <label for="homeToggle" title="Automatikusan lenyitja az összes összecsukott menüt a főoldalon.">Főoldal
+          automatikus kibontása</label>
+        <label class="switch">
+          <input type="checkbox" id="homeToggle">
+          <span class="slider"></span>
+        </label>
+      </div>
 
-  <div class="toggle-row">
-    <label for="autoExamToggle" title="Automatically click 'Felvétel' for targeted exams. Target exams directly on the exam registration page.">Auto Exam Registration</label>
-    <label class="switch">
-      <input type="checkbox" id="autoExamToggle">
-      <span class="slider"></span>
-    </label>
-  </div>
+      <div class="row-divider"></div>
 
-  <button id="viewTargetsBtn" class="shift-btn" style="width: 100%; margin-bottom: 15px; padding: 6px;">View Selected Exams (0)</button>
+      <div class="toggle-row">
+        <label for="listToggle"
+          title="Automatikusan rákattint a 'Továbbiak betöltése' gombra a listákban a megadott korlátig.">Listák
+          automatikus lenyitása</label>
+        <label class="switch">
+          <input type="checkbox" id="listToggle">
+          <span class="slider"></span>
+        </label>
+      </div>
 
-  <hr class="separator">
+      <div class="toggle-row sub-row" id="listLimitRow" style="margin-top: 6px;">
+        <label for="listExpandLimit" title="A listákban automatikusan betöltendő elemek maximális száma.">↳ Maximum
+          lista
+          elemek</label>
+        <select id="listExpandLimit" class="compact-select">
+          <option value="50">50</option>
+          <option value="100">100</option>
+          <option value="250">250</option>
+          <option value="500">500</option>
+        </select>
+      </div>
 
-  <div class="toggle-row">
-    <label for="autoSubjectRedirectToggle" title="Automatically redirect to the Tárgyfelvétel page after login.">Auto Subject Redirect</label>
-    <label class="switch">
-      <input type="checkbox" id="autoSubjectRedirectToggle">
-      <span class="slider"></span>
-    </label>
-  </div>
+      <div class="row-divider"></div>
 
-  <div class="toggle-row">
-    <label for="autoSubjectToggle" title="Automatically click 'Tárgy felvétele' for all subjects in the Órarendtervező. Skips Zárthelyi.">Auto Subject Registration</label>
-    <label class="switch">
-      <input type="checkbox" id="autoSubjectToggle">
-      <span class="slider"></span>
-    </label>
-  </div>
+      <div class="toggle-row">
+        <label for="autoFilterToggle"
+          title="Automatikusan megnyitja a szűrőpanelt és elküldi a lekérdezést a sablon kiválasztása után.">Lekérdezések
+          automatikus küldése</label>
+        <label class="switch">
+          <input type="checkbox" id="autoFilterToggle">
+          <span class="slider"></span>
+        </label>
+      </div>
 
-  <div class="note">Refresh Neptun if the changes didn't apply automatically.</div>
+      <div class="row-divider"></div>
 
-  <div style="text-align: center; margin-top: 10px;">
-    <a href="#" id="openOptionsPage" style="color: #0056b3; font-size: 12px; text-decoration: none;">⧉ Open Settings in Full Tab</a>
-  </div>
+      <div class="toggle-row">
+        <label for="serverInfoToggle"
+          title="Megjeleníti a szerver nevét és a szabad helyek számát a bejelentkezési oldalon.">Szerverinfók a
+          bejelentkezésnél</label>
+        <label class="switch">
+          <input type="checkbox" id="serverInfoToggle">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="note">Frissítsd a Neptunt (F5), ha a módosítások nem lépnek életbe azonnal.</div>
+
+    <div class="footer-link-wrap">
+      <a href="#" id="openOptionsPage" class="full-tab-link">⧉ Beállítások megnyitása új lapon</a>
+    </div>
   </div>
 
   <div id="targetsPage" style="display: none;">
-    <h3>Selected Exams</h3>
-    <button id="backToMainBtn" class="shift-btn" style="margin-bottom: 15px;">← Back to Settings</button>
-    
-    <div id="autoExamTargetsContainer" style="background: #fff; border: 1px solid #ccc; border-radius: 6px; padding: 8px; margin-bottom: 15px;">
-      <ul id="autoExamTargetsList" style="list-style-type: none; padding-left: 0; margin: 0; font-size: 11px; color: #333;"></ul>
-      <button id="clearExamTargetsBtn" class="shift-btn" style="width: 100%; margin-top: 8px;">Clear Targets</button>
+    <h3>Kiválasztott vizsgák</h3>
+    <button id="backToMainBtn" class="shift-btn" style="width: 100%; margin-bottom: 12px;">← Vissza a
+      beállításokhoz</button>
+
+    <div id="autoExamTargetsContainer"
+      style="background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; margin-bottom: 12px;">
+      <ul id="autoExamTargetsList"
+        style="list-style-type: none; padding-left: 0; margin: 0; font-size: 11px; color: #333;"></ul>
+      <button id="clearExamTargetsBtn" class="shift-btn" style="width: 100%; margin-top: 8px;">Kiválasztott vizsgák
+        törlése</button>
     </div>
   </div>
 
   <div id="bgSettingsPage" style="display: none;">
-    <h3>Background Settings</h3>
-    <button id="backToMainFromBgBtn" class="shift-btn" style="margin-bottom: 15px;">← Back to Settings</button>
-    
-    <div class="toggle-row" id="bgTypeRow">
-      <label for="bgTypeSelect" title="Choose between a custom image URL or a solid color for the dashboard background.">Background Type</label>
-      <select id="bgTypeSelect" class="url-input" style="width: 80px; margin-bottom: 0; padding: 4px;">
-        <option value="image">Image</option>
-        <option value="color">Color</option>
+    <h3>Háttér beállítások</h3>
+    <button id="backToMainFromBgBtn" class="shift-btn" style="width: 100%; margin-bottom: 12px;">← Vissza a
+      beállításokhoz</button>
+
+    <div class="toggle-row" id="bgTypeRow" style="margin-bottom: 10px;">
+      <label for="bgTypeSelect" title="Válassz egyedi kép URL vagy egyszínű háttér között.">Háttér típusa</label>
+      <select id="bgTypeSelect" class="compact-select" style="width: 80px; padding: 4px;">
+        <option value="image">Kép</option>
+        <option value="color">Egyszínű</option>
       </select>
     </div>
 
-    <div class="toggle-row" id="bgColorRow" style="display: none;">
-      <label for="bgColorInput">Choose Color / Hex</label>
+    <div class="toggle-row" id="bgColorRow" style="display: none; margin-bottom: 10px;">
+      <label for="bgColorInput">Szín kiválasztása / Hex</label>
       <div style="display: flex; gap: 8px; align-items: center;">
         <input type="color" id="bgColorInput"
-          style="cursor: pointer; width: 36px; height: 26px; border: 1px solid #ccc; border-radius: 4px; padding: 0; background: none;">
-        <input type="text" id="bgHexInput" 
-          style="width: 70px; padding: 4px; border: 1px solid #ccc; border-radius: 4px; font-family: monospace; text-align: center; margin-bottom: 0;" placeholder="#1c2c42">
+          style="cursor: pointer; width: 36px; height: 26px; border: 1px solid #cbd5e1; border-radius: 4px; padding: 0; background: none;">
+        <input type="text" id="bgHexInput"
+          style="width: 70px; padding: 4px; border: 1px solid #cbd5e1; border-radius: 4px; font-family: monospace; text-align: center; margin-bottom: 0;"
+          placeholder="#1c2c42">
       </div>
     </div>
 
-    <input type="text" id="bgUrlInput" class="url-input" placeholder="Paste image URL here...">
+    <input type="text" id="bgUrlInput" class="url-input" placeholder="Illeszd be a kép URL-jét ide...">
 
     <div class="shift-controls" id="shiftControls">
       <div class="shift-btn-group">
-        <button id="bgPosUp5" class="shift-btn" title="Up 5%">▲5</button>
-        <button id="bgPosUp1" class="shift-btn" title="Up 1%">▲1</button>
+        <button id="bgPosUp5" class="shift-btn-sm" title="Fel 5%">▲5</button>
+        <button id="bgPosUp1" class="shift-btn-sm" title="Fel 1%">▲1</button>
       </div>
 
       <span id="bgPosValue">50%</span>
 
       <div class="shift-btn-group">
-        <button id="bgPosDown1" class="shift-btn" title="Down 1%">▼1</button>
-        <button id="bgPosDown5" class="shift-btn" title="Down 5%">▼5</button>
-        <button id="bgPosReset" class="shift-btn" title="Reset to 50%">↺</button>
+        <button id="bgPosDown1" class="shift-btn-sm" title="Le 1%">▼1</button>
+        <button id="bgPosDown5" class="shift-btn-sm" title="Le 5%">▼5</button>
+        <button id="bgPosReset" class="shift-btn-sm" title="Visszaállítás 50%-ra">↺</button>
       </div>
     </div>
   </div>

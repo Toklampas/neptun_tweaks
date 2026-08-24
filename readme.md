@@ -7,13 +7,14 @@ Egy egyszerű böngésző bővítmény, aminek a célja, hogy kényelmesebbé te
 ## ✨ Funkciók
 * **Sötét mód:** Kíméld a szemed a beépített, prémium sötét témával, amely az egész Neptun felületén (és immár az Unipoll vizsgáztató felületen is) működik!
 * **Automata vizsgajelentkezés:** A vizsgajelentkezés oldalon bejelölheted a kiszemelt vizsgákat, és a bővítmény villámgyorsan, automatikusan rákattint a "Felvétel" gombra, amint az aktívvá válik. Ne maradj le a legjobb időpontokról!
+* **Automata tárgyfelvétel és átirányítás:** Az Órarendtervező oldalon automatikusan rákattint a "Tárgy felvétele" gombra a megtervezett tárgyaidnál (a zárthelyiket kihagyja). Opcionálisan bejelentkezés után rögtön át is irányít a Tárgyfelvétel oldalra.
 * **Egyedi háttér a kezdőlapon:** Lecseréli az alapértelmezett kék/lila felső sávot egy általad megadott képre, vagy egy letisztult, általad választott egyszínű háttérre. Az üdvözlő szöveget automatikusan fehérre színezi és kap egy kis árnyékot is, így bármilyen háttéren tökéletesen olvasható marad. Kép esetén az extension menüjében még finomhangolni is tudod a kép fókuszpontját!
 * **Gyors Naptár gomb:** A felső sávba, a keresőmező mellé automatikusan bekerül egy "Naptár" gomb, mellyel egyetlen kattintással elérheted a hallgatói órarendet, anélkül, hogy a menüben kéne keresgélned.
 * **Panelek automatikus kinyitása:** Unod már, hogy mindig kattintgatni kell a jegyeidhez vagy az üzeneteidhez? Ez a funkció a betöltés pillanatában rögtön lenyitja az összes összecsukott menüt a kezdőlapon (pl. *Vizsgák*, *Hírek*, *Eredmények*).
 * **Turbó listabetöltő:** Amikor egy hosszú listát nézel (pl. hallgatók a kurzuson, felvett tárgyak, vizsgák), a Neptun elrejti őket egy „Továbbiak betöltése" gomb mögé. A script a háttérben gyorsan és láthatatlanul rákattint erre a gombra. Az automatikusan betöltendő elemek maximum számát te magad tudod szabályozni a kiegészítő beállításaiban (50, 100, 250 vagy 500 elem). Ha ennél is több kell, csak kattints rá te magad az oldal alján, és újra betöltődik az adott mennyiség!
 * **Szerver infó a bejelentkezési oldalon:** A bejelentkezési képernyőn megmutatja a csatlakozott szerver nevét és a szabad helyek számát közvetlenül a nyelvválasztó mellett, így nem kell a láblécben keresgélned.
 * **Lekérdezés-kezelő:** A lekérdezések oldalon automatikusan megnyitja a szűrőpanelt, és a legördülő menüből választás után azonnal elküldi a szűrést — nem kell külön rákattintanod a „Lista szűrése" gombra.
-* **Verziószám és gyorslink:** Egy apró, letisztult verziószámot tesz a neved mellé a kezdőlapon. Ha rákattintasz, egyből erre a GitHub oldalra hoz.
+* **Verziószám és gyorslink:** Egy letisztult verziójelvény a Neptun láblécében és a bővítmény menüjében, melyre kattintva közvetlenül erre a GitHub oldalra jutsz.
 
 ## 🚀 Telepítés
 
