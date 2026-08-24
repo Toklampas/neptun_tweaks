@@ -14,6 +14,8 @@ const NEPTUN_TWEAKS_DEFAULTS = {
     featureServerInfo: true,
     featureAutoFilter: true,
     featureAutoExam: false,
-    autoExamTargets: []
+    autoExamTargets: [],
+    featureAutoSubjectRedirect: false,
+    featureAutoSubject: false
 };
 

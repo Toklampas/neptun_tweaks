@@ -58,6 +58,12 @@
     gap: 12px;
 }
 
+/* Ensure login submit button text stays crisp white */
+button.login-button,
+button.login-button .neptun-button__label {
+    color: #ffffff !important;
+}
+
 /* ============================================
    Version Link (Dashboard Header)
    ============================================ */

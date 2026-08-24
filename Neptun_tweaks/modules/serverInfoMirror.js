@@ -5,7 +5,7 @@ function mirrorServerInfo() {
 
     const serverInfoSrc = document.querySelector('.footer__server-info');
     const langDropdown = document.querySelector('neptun-language-dropdown.neptun-language-dropdown');
-    
+
     if (serverInfoSrc && langDropdown) {
         // Wait until it actually has text
         const rawText = serverInfoSrc.innerText.trim();
@@ -24,7 +24,7 @@ function mirrorServerInfo() {
         if (!mirror) {
             mirror = document.createElement('div');
             mirror.id = 'neptun-tweaks-server-info-mirror';
-            
+
             // Clean up old parent modifications if they exist from previous load
             if (langDropdown.parentNode) {
                 langDropdown.parentNode.style.display = '';
@@ -34,10 +34,10 @@ function mirrorServerInfo() {
 
             // Make the language dropdown a flex container so they sit side-by-side
             langDropdown.classList.add('neptun-tweaks-lang-flex');
-            
+
             langDropdown.appendChild(mirror);
         }
-        
+
         // Update text with structured format (using DOM API to avoid innerHTML)
         mirror.textContent = '';
 
@@ -79,4 +79,45 @@ function removeServerInfoMirror() {
     if (mirror) {
         mirror.remove();
     }
+}
+
+// --- Login Button Text Tweak ---
+function updateLoginButtonText(settings) {
+    if (!location.href.includes('/login')) return false;
+
+    const btn = document.querySelector('button.login-button, button[type="submit"].login-button, button[type="submit"]');
+    if (!btn) return false;
+
+    let text = 'Bejelentkezés';
+    if (settings) {
+        if (settings.featureAutoSubject) {
+            text = 'Bejelentkezés és auto. Tárgyfelvétel';
+        } else if (settings.featureAutoSubjectRedirect) {
+            text = 'Bejelentkezés és Tárgyfelvétel';
+        } else if (settings.featureAutoExam) {
+            text = 'Bejelentkezés és auto. Vizsgafelvétel';
+        }
+    }
+
+    let label = btn.querySelector('.neptun-button__label');
+    if (!label) {
+        label = document.createElement('span');
+        label.className = 'neptun-button__label';
+        btn.textContent = '';
+        btn.appendChild(label);
+    }
+
+    label.textContent = text;
+    label.style.color = '#ffffff';
+    return true;
+}
+
+function startLoginButtonTweaks(settings) {
+    let attempts = 0;
+    const interval = setInterval(() => {
+        attempts++;
+        if (updateLoginButtonText(settings) || attempts > 20 || !location.href.includes('/login')) {
+            clearInterval(interval);
+        }
+    }, 500);
 }
