@@ -19,12 +19,35 @@
     }
 
     h3 {
+      position: relative;
       margin-top: 0;
       margin-bottom: 15px;
       font-size: 16px;
       text-align: center;
       border-bottom: 2px solid #0056b3;
       padding-bottom: 8px;
+      line-height: 20px;
+    }
+
+    .version-badge {
+      position: absolute;
+      right: 0;
+      top: 0;
+      font-size: 11px;
+      font-weight: 600;
+      color: #0056b3;
+      background: rgba(0, 86, 179, 0.08);
+      border: 1px solid rgba(0, 86, 179, 0.2);
+      border-radius: 4px;
+      padding: 1px 6px;
+      text-decoration: none;
+      transition: 0.2s;
+      line-height: normal;
+    }
+
+    .version-badge:hover {
+      background: rgba(0, 86, 179, 0.16);
+      border-color: #0056b3;
     }
 
     .toggle-row {
@@ -232,12 +255,26 @@
     body.dark-mode a#openOptionsPage {
       color: #4ea8ff !important;
     }
+
+    body.dark-mode .version-badge {
+      color: #4ea8ff;
+      background: rgba(78, 168, 255, 0.12);
+      border-color: rgba(78, 168, 255, 0.3);
+    }
+
+    body.dark-mode .version-badge:hover {
+      background: rgba(78, 168, 255, 0.22);
+      border-color: #4ea8ff;
+    }
   </style>
 </head>
 
 <body>
   <div id="mainPage">
-    <h3>Neptun Tweaks</h3>
+    <h3>
+      <span>Neptun Tweaks</span>
+      <a href="https://github.com/Toklampas/neptun_tweaks" target="_blank" id="popupVersion" class="version-badge" title="Neptun Tweaks GitHub Repository"></a>
+    </h3>
 
   <div class="toggle-row">
     <label for="darkModeToggle" title="Enable dark mode for the entire Neptun site.">Dark Mode</label>

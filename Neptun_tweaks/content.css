@@ -65,18 +65,45 @@ button.login-button .neptun-button__label {
 }
 
 /* ============================================
-   Version Footer
+   Version Footer Badge (Sleek Minimalist)
    ============================================ */
 #neptun-tweaks-footer-v {
-    font-size: 1em;
-    color: #ccc;
-    margin-left: 5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1;
+    color: #e2e8f0;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 4px;
+    padding: 2px 7px;
+    margin-left: 8px;
     text-decoration: none;
+    letter-spacing: 0.2px;
+    vertical-align: middle;
+    position: relative;
+    top: -1.5px;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    cursor: pointer;
+}
+
+#neptun-tweaks-footer-v .neptun-tweaks-footer-icon {
+    opacity: 0.85;
+    transition: opacity 0.15s ease;
+    flex-shrink: 0;
 }
 
 #neptun-tweaks-footer-v:hover {
-    color: #fff;
-    text-decoration: underline;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.22);
+    border-color: rgba(255, 255, 255, 0.4);
+    text-decoration: none;
+}
+
+#neptun-tweaks-footer-v:hover .neptun-tweaks-footer-icon {
+    opacity: 1;
 }
 
 /* ============================================

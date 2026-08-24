@@ -8,8 +8,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const bgColorInput = document.getElementById('bgColorInput');
     const bgHexInput = document.getElementById('bgHexInput');
     const openOptionsPage = document.getElementById('openOptionsPage');
+    const popupVersion = document.getElementById('popupVersion');
     const bgTypeRow = document.getElementById('bgTypeRow');
     const bgColorRow = document.getElementById('bgColorRow');
+
+    // Populate version badge from manifest
+    try {
+        const manifestVersion = chrome.runtime.getManifest().version;
+        if (popupVersion) {
+            popupVersion.textContent = `v${manifestVersion}`;
+        }
+    } catch (e) {}
 
     // Detect Firefox: hide native color picker (it closes the popup), show hex input instead
     const isFirefox = navigator.userAgent.includes('Firefox');

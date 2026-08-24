@@ -332,5 +332,6 @@ Then selectively **un-inverts** media elements (images, video, SVGs, iframes) an
 
 The version string in `manifest.json` → `"version"` is the single source of truth. It is read at runtime via `chrome.runtime.getManifest().version` and displayed in:
 - The site footer (`#neptun-tweaks-footer-v`)
+- The extension popup header (`#popupVersion`)
 
 Bump it in `manifest.json` only. No other file tracks the version.
