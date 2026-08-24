@@ -27,9 +27,7 @@ function startDashboardTweaks(settings) {
             calendarDone = injectCalendarButton();
         }
 
-        const versionDone = injectVersion();
-
-        if ((menusDone && versionDone && calendarDone) || attempts >= 10) {
+        if ((menusDone && calendarDone) || attempts >= 10) {
             clearInterval(checkInterval);
         }
     }, 500);

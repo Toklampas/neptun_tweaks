@@ -65,27 +65,18 @@ button.login-button .neptun-button__label {
 }
 
 /* ============================================
-   Version Link (Dashboard Header)
-   ============================================ */
-#neptun-ext-version {
-    font-size: 0.6em;
-    font-weight: normal;
-    margin-left: 8px;
-    text-decoration: none;
-    color: #555;
-}
-
-#neptun-ext-version:hover {
-    color: #0056b3;
-}
-
-/* ============================================
    Version Footer
    ============================================ */
 #neptun-tweaks-footer-v {
     font-size: 1em;
     color: #ccc;
     margin-left: 5px;
+    text-decoration: none;
+}
+
+#neptun-tweaks-footer-v:hover {
+    color: #fff;
+    text-decoration: underline;
 }
 
 /* ============================================
@@ -95,15 +86,6 @@ button.login-button .neptun-button__label {
 body.neptun-tweaks-custom-bg h3.header__title {
     color: white;
     text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
-}
-
-body.neptun-tweaks-custom-bg #neptun-ext-version {
-    color: white;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 1), 0 0 4px rgba(0, 0, 0, 0.8);
-}
-
-body.neptun-tweaks-custom-bg #neptun-ext-version:hover {
-    color: #add8e6;
 }
 
 /* ============================================

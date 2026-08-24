@@ -46,7 +46,7 @@ neptun_tweaks/                   ← Repo root
         ├── homePageExpander.js  ← Auto-expand collapsed dashboard panels
         ├── listExpander.js      ← Auto-click "Load More" buttons on lists
         ├── calendarButton.js    ← Inject quick-access calendar button in header
-        ├── version.js           ← Inject version badge in header + footer
+        ├── version.js           ← Inject version badge in footer
         ├── serverInfoMirror.js  ← Mirror server info + custom login button text
         ├── filterTweaks.js      ← Auto-open filter panel + auto-submit on selection
         ├── examRegistration.js  ← Auto exam registration with priority queue
@@ -73,7 +73,7 @@ Scripts are loaded as **content scripts** in the exact order declared in `manife
 2. modules/headerImage.js         ← Defines startHeaderImageTweaks(), window.updateLiveBackground
 3. modules/listExpander.js        ← Defines startListExpander()
 4. modules/homePageExpander.js     ← Defines expandMenus()
-5. modules/version.js             ← Defines injectVersion(), startFooterVersionTweaks()
+5. modules/version.js             ← Defines appendFooterVersion(), startFooterVersionTweaks()
 6. modules/calendarButton.js      ← Defines injectCalendarButton()
 7. modules/serverInfoMirror.js     ← Defines startServerInfoMirror(), startLoginButtonTweaks()
 8. modules/filterTweaks.js        ← Defines startQueryTweaks()
@@ -331,7 +331,6 @@ Then selectively **un-inverts** media elements (images, video, SVGs, iframes) an
 ## 11. Version Bumping
 
 The version string in `manifest.json` → `"version"` is the single source of truth. It is read at runtime via `chrome.runtime.getManifest().version` and displayed in:
-- The dashboard header (`#neptun-ext-version`)
 - The site footer (`#neptun-tweaks-footer-v`)
 
 Bump it in `manifest.json` only. No other file tracks the version.
