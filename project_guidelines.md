@@ -10,7 +10,7 @@
 |---|---|---|
 | **Platform** | Browser Extension (Chrome + Firefox) | Manifest V3 |
 | **Manifest version** | `"manifest_version": 3` | — |
-| **Extension version** | Tracked in `manifest.json` → `"version"` | Currently `1.2.9` |
+| **Extension version** | Tracked in `manifest.json` → `"version"` | Currently `1.3.0` |
 | **Language** | Vanilla JavaScript (ES6+) | No TypeScript, no transpiler, no bundler |
 | **Markup** | Raw HTML | Single file: `popup.html` |
 | **Styling** | Vanilla CSS | Two scopes: inline `<style>` in `popup.html`, injected `content.css` |
