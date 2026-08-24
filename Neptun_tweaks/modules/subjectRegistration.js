@@ -115,11 +115,16 @@ function startAutoSubjectRegistration(settings) {
                 () => {
                     if (!isAutoRegisterEnabled) return;
 
-                    console.log("Neptun Tweaks: Expanding all subject accordions in Órarendtervező...");
-                    expandAllPlannerPanels(() => {
+                    expandAllPlannerPanels((wasAlreadyOpen) => {
                         if (!isAutoRegisterEnabled) return;
-                        console.log("Neptun Tweaks: All accordions expanded. Starting loop in 1.5s...");
-                        setTimeout(afterDone, 1500);
+
+                        if (wasAlreadyOpen) {
+                            console.log("Neptun Tweaks: Accordions were already open. Starting loop immediately...");
+                            afterDone();
+                        } else {
+                            console.log("Neptun Tweaks: Accordions expanded. Starting loop in 1.5s...");
+                            setTimeout(afterDone, 1500);
+                        }
                     });
                 }
             );
@@ -325,30 +330,42 @@ function startAutoSubjectRegistration(settings) {
     }
 
     /**
-     * Expands all subject accordion panels inside Órarendtervező with a 150ms staggered delay (skipping Zárthelyi).
+     * Expands all unexpanded subject accordion panels inside Órarendtervező with a 400ms staggered delay (skipping Zárthelyi).
+     * Passes true to onDone if all panels were already expanded, or false if expansions were performed.
      */
     function expandAllPlannerPanels(onDone) {
         const panels = getPlannerPanels();
-        const eligiblePanels = panels.filter(panel => {
+        const unexpandedPanels = panels.filter(panel => {
             const headerText = getAccordionHeaderText(panel);
-            return !headerText.toLowerCase().includes('zárthelyi');
+            if (headerText.toLowerCase().includes('zárthelyi')) return false;
+
+            const header = panel.querySelector('mat-expansion-panel-header, .mat-expansion-panel-header');
+            if (!header) return false;
+
+            return !isAccordionExpanded(panel, header);
         });
 
-        console.log('Neptun Tweaks: Found ' + eligiblePanels.length + ' subject accordions to expand.');
+        if (unexpandedPanels.length === 0) {
+            console.log('Neptun Tweaks: All eligible subject accordions are already expanded.');
+            if (typeof onDone === 'function') onDone(true);
+            return;
+        }
+
+        console.log('Neptun Tweaks: Found ' + unexpandedPanels.length + ' unexpanded subject accordions to expand.');
 
         let index = 0;
         function expandNext() {
-            if (index >= eligiblePanels.length) {
+            if (index >= unexpandedPanels.length) {
                 console.log('Neptun Tweaks: Finished expanding all subject accordions.');
-                if (typeof onDone === 'function') onDone();
+                if (typeof onDone === 'function') onDone(false);
                 return;
             }
 
-            const panel = eligiblePanels[index++];
+            const panel = unexpandedPanels[index++];
             const header = panel.querySelector('mat-expansion-panel-header, .mat-expansion-panel-header');
             if (header && !isAccordionExpanded(panel, header)) {
                 const headerText = getAccordionHeaderText(panel);
-                console.log('Neptun Tweaks: Expanding accordion [' + index + '/' + eligiblePanels.length + '] "' + headerText + '"');
+                console.log('Neptun Tweaks: Expanding accordion [' + index + '/' + unexpandedPanels.length + '] "' + headerText + '"');
                 triggerAccordionExpansion(panel, header);
             }
 
